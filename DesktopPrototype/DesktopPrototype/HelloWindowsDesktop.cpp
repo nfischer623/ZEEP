@@ -135,6 +135,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         EndPaint(hWnd, &ps);
         break;
+    case WM_CLOSE:
+        if (MessageBox(hWnd, L"Really quit?", L"My application", MB_OKCANCEL) == IDOK)
+        {
+            DestroyWindow(hWnd);
+        }
+        // Else: User canceled. Do nothing.
+        //return 0;
+        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
