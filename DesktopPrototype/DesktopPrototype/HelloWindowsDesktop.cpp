@@ -135,6 +135,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         EndPaint(hWnd, &ps);
         break;
+    // code from https://learn.microsoft.com/en-us/windows/win32/learnwin32/closing-the-window
     case WM_CLOSE:
         if (MessageBox(hWnd, L"Really quit?", L"My application", MB_OKCANCEL) == IDOK)
         {
