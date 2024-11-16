@@ -38,38 +38,35 @@ public class Main extends Application {
     }
 
     private Region createContent() {
-        TextField inputTextField = new TextField("");
-        HBox inputRow = new HBox(new Label("Name:"), inputTextField);
-        inputRow.setSpacing(6);
-        inputRow.setAlignment(Pos.CENTER);
-
-        Label outputLabel = new Label("");
-        Button actionButton = new Button("Hello");
-        actionButton.setOnAction(evt -> outputLabel.setText("Hello " + inputTextField.getText()));
-
-        VBox results = new VBox(20, inputRow, outputLabel, actionButton);
+        VBox results = new VBox(20, createInputRow(), createOutputLabel(), createButton());
         results.setAlignment(Pos.CENTER);
-
+        results.getStylesheets().add(this.getClass().getResource("/style.css").toExternalForm());
         return results;
     }
 
-    private Node createGreetingButton() {
+    private Button createButton() {
         Button results = new Button("Hello");
         results.setOnAction(evt -> setGreeting());
         return results;
     }
 
-    private Node createInputRow() {
+    private HBox createInputRow() {
         TextField textField = new TextField("");
         textField.textProperty().bindBidirectional(name);
-        HBox hBox = new HBox(6, new Label("Name:"), textField);
+        HBox hBox = new HBox(6, styledLabel("Name:", "prompt-label"), textField);
         hBox.setAlignment(Pos.CENTER);
         return hBox;
     }
 
     private Node createOutputLabel() {
-        Label results = new Label("");
+        Label results = styledLabel("", "greeting-label");
         results.textProperty().bind(greeting);
+        return results;
+    }
+
+    private Label styledLabel(String contents, String classSelector) {
+        Label results = new Label(contents);
+        results.getStyleClass().add(classSelector);
         return results;
     }
 
