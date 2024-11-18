@@ -11,8 +11,9 @@ public class FractalController {
 
     public FractalController() {
         FractalModel model = new FractalModel();
-        viewBuilder = new FractalViewBuilder(model);
         interactor = new FractalInteractor(model);
+//        viewBuilder = new FractalViewBuilder(model, interactor::saveBrushSize);
+        viewBuilder = new FractalViewBuilder(model, interactor);
     }
 
     public Region getView() {
