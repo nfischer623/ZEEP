@@ -21,18 +21,22 @@ import javafx.scene.paint.Color;
 import javafx.util.Builder;
 
 public class FractalViewBuilder implements Builder<Region> {
-//    private final FractalModel model;
-//    private final Runnable saveHandler;
     private final FractalModel model;
-    private final FractalInteractor interactor;
+//    private final Runnable saveHandler;
+//    private final FractalModel model;
+//    private final FractalInteractor interactor;
 
 //    public FractalViewBuilder(FractalModel model, Runnable saveHandler) {
 //        this.model = model;
 //        this.saveHandler = saveHandler;
 //    }
-    public FractalViewBuilder(FractalModel model, FractalInteractor interactor) {
+//    public FractalViewBuilder(FractalModel model, FractalInteractor interactor) {
+//        this.model = model;
+//        this.interactor = interactor;
+//    }
+
+    public FractalViewBuilder(FractalModel model) {
         this.model = model;
-        this.interactor = interactor;
     }
 
     @Override
@@ -67,7 +71,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createApplyButton() {
         Button applyButton = new Button("Apply");
-        applyButton.setOnAction(this.interactor::saveBrushSize);
+//        applyButton.setOnAction(this.interactor::saveBrushSize);
         HBox results = new HBox(10, applyButton);
         results.setAlignment(Pos.CENTER_RIGHT);
         return results;
