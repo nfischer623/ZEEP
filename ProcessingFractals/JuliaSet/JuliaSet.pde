@@ -1,5 +1,55 @@
 void setup() {
-  size(1200, 900);
+  size(1400, 1050);
+}
+
+//graph size
+float minx = -2;
+float maxx = 2;
+float miny = -1.5;
+float maxy = 1.5;
+
+//max iterations
+int maxiter = 100;
+
+boolean paused=false;
+
+void keyPressed(){
+  if (key == 'p' || key == 'P'){
+    paused = !paused;
+    if (paused==true){
+      println("Paused");
+    }
+    if (paused==false){
+      println("Playing");
+    }
+  }
+  
+  //center point in window
+  float xCenter = (minx + maxx)/2;
+  float yCenter = (miny + maxy)/2;
+  
+  float rangex = maxx - minx;
+  //zoom factor
+  float zoomIn = .3*rangex;
+  float zoomOut = .9*rangex;
+  
+  //zoom in
+  if (key == '+' || key == '=') {
+    minx = xCenter - zoomIn;
+    maxx = xCenter + zoomIn;
+    miny = yCenter - .8*zoomIn;
+    maxy = yCenter + .8*zoomIn;
+  }
+  //zoom out
+  if (key == '_' || key == '-') {
+    minx = xCenter - zoomOut;
+    maxx = xCenter + zoomOut;
+    miny = yCenter - .8*zoomOut;
+    maxy = yCenter + .8*zoomOut;
+  }
+  if (key == 'c' || key == 'C'){
+    println("Min X: ", minx, "Max X: ", maxx, "Min Y: ", miny, "Max Y: ", maxy);
+  }
 }
 
 void draw() {
@@ -9,21 +59,30 @@ void draw() {
   //real component plotted on x-axis, imaginary plotted on y
   float realc= map(mouseX, 0, width, -1, 1);
   float imagc= map(mouseY, 0, height, -1, 1);
-
-  //max iterations
-  var maxiter=100;
+  
+  if (paused==false){
+    realc= map(mouseX, 0, width, -1, 1);
+    imagc= map(mouseY, 0, height, -1, 1);
+  }
+  if (paused == true){
+    realc= int(map(mouseX, 0, width, -1, 1));
+    imagc=int(map(mouseY, 0, height, -1, 1));
+  }
   
   boolean clicked=false;
       
   //https://thecodingtrain.com/challenges/21-mandelbrot-set-with-p5js
   //for each pixel
+  //if (paused==false){
   for (int x = 0; x < width; x++) {
     for (int y = 0; y < height; y++) {
       
 
       //puts math on a smaller interval
-      var a = map(x, 0, width, -2, 2);
-      var b = map(y, 0, height, -2, 2);
+      var a = map(x, 0, width, minx, maxx);
+      var b = map(y, 0, height, miny, maxy);
+      
+      //number of iterations
       var n = 0;
 
       //max iterations
@@ -46,16 +105,18 @@ void draw() {
         //increments iteration counter
         n++;
       }
+    
 
 
       
-      var red=map(n, 0, maxiter, 0, 250);
+      var red=map(n, 0, 50, 0, 250);
       var green=map(n, 0, maxiter, 0, 250);
       var blue=map(n, 0, 50, 0, 250);
 
       
       //pixel location within a 1d array
       int location= (x + y*width);
+      
       //sets pixel color
       pixels[location]=color(red, green, blue);
         }  
@@ -66,11 +127,12 @@ void draw() {
         break;
       }
       }
+  //}
       updatePixels();
     }
 
-void mouseClicked() {
-    print("click");
-    boolean clicked=false;
+//void mouseClicked() {
+  //  print("click");
+    //boolean clicked=false;
 
-  }
+  //}

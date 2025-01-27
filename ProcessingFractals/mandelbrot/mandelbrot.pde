@@ -1,41 +1,42 @@
 //user's color picks
+//palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
   
 //window size in pixels
 void setup() {
-  size(1500, 1200);
+  size(1400, 1050);
 }
 
 //graph size
-float minx = -2;
-float maxx = 2;
-float miny = -1.6;
-float maxy = 1.6;
+float minx = -2.5;
+float maxx = 1.5;
+float miny = -1.5;
+float maxy = 1.5;
 
 //max iterations
 int maxiter = 100;
   
 void mouseDragged(){
   //rate of change of movement based on scale of graph
-  float delta = .0025*abs(maxx - minx);
+  float delta = .0025 * abs(maxx - minx);
   
   //determines direction mouse is moving in
   if (pmouseX < mouseX) {
     //shifts range that window sees
     minx = minx - delta;
-    maxx= maxx - delta;
+    maxx = maxx - delta;
   }
   if (pmouseX > mouseX) {
     minx = minx + delta;
-    maxx= maxx + delta;
+    maxx = maxx + delta;
   }
     if (pmouseY < mouseY) {
     miny = miny - delta;
-    maxy= maxy - delta;
+    maxy = maxy - delta;
   }
   if (pmouseY > mouseY) {
     miny = miny + delta;
-    maxy= maxy + delta;
+    maxy = maxy + delta;
   }
   
 }
@@ -47,8 +48,8 @@ void keyPressed(){
   
   float rangex = maxx - minx;
   //zoom factor
-  float zoomIn = .3*rangex;
-  float zoomOut = .9*rangex;
+  float zoomIn = .3 * rangex;
+  float zoomOut = .9 * rangex;
   
   //zoom in
   if (key == '+' || key == '=') {
@@ -88,24 +89,23 @@ void draw() {
       //real component
       var origa = a;
       //imaginary component
-      var origb= b;
+      var origb = b;
       
       //makes faster by setting center of mandelblobs to max iterations
-      if (((a+.25)*(a+.25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
-        n=maxiter;
+      if (((a + .25)*(a + .25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
+        n = maxiter;
       }
       
-      while (n<maxiter) {
-      
+      while (n < maxiter) {
         //(a+bi)^2 = a^2 + 2abi - b^2
         // real component
-        var newreal= a*a - b*b;
+        var newreal = a*a - b*b;
         //imaginary component
         var newcomplex = 2*a*b;
         
         //next iteration components
-        a=newreal +origa;
-        b=newcomplex+origb;
+        a = newreal + origa;
+        b = newcomplex + origb;
         
         //checks if point is going towards infinity
         if (a*a + b*b > 4) {
@@ -116,7 +116,7 @@ void draw() {
       }
       
       //pixel location within a 1d array
-      int location= (x + y*width);
+      int location = (x + y*width);
       
       //grayscale color scheme if no given colors
       if (colorPicks.length == 0) {
@@ -127,7 +127,7 @@ void draw() {
            
       //color scheme given user's picks
       if (colorPicks.length > 0) {
-        var myColor=0;
+        var myColor = 0;
       
         int numColors = colorPicks.length;
         for (int i=0; i<numColors; i++){
