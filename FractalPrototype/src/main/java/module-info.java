@@ -4,6 +4,7 @@ module com.example.fractalprototype {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires core;
 
     opens com.example.fractalprototype to javafx.fxml;
     exports com.example.fractalprototype;

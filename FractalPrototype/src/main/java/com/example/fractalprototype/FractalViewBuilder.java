@@ -19,21 +19,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Builder;
+import processing.core.PApplet;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
-//    private final Runnable saveHandler;
-//    private final FractalModel model;
-//    private final FractalInteractor interactor;
-
-//    public FractalViewBuilder(FractalModel model, Runnable saveHandler) {
-//        this.model = model;
-//        this.saveHandler = saveHandler;
-//    }
-//    public FractalViewBuilder(FractalModel model, FractalInteractor interactor) {
-//        this.model = model;
-//        this.interactor = interactor;
-//    }
 
     public FractalViewBuilder(FractalModel model) {
         this.model = model;
@@ -42,9 +31,6 @@ public class FractalViewBuilder implements Builder<Region> {
     @Override
     public Region build() {
         BorderPane results = new BorderPane();
-//        results.getStylesheets().add(
-//                Objects.requireNonNull(this.getClass().getResource(
-//                        "/style.css")).toExternalForm());
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
         results.setBottom(createExitButton());
@@ -83,6 +69,7 @@ public class FractalViewBuilder implements Builder<Region> {
         canvas.setOnMouseDragged(paintHandler(gc));
         gc.setFill(color);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        MakeProcessingWindow(); // SHOULD NOT BE CALLED FROM HERE
         return canvas;
     }
 
@@ -113,5 +100,11 @@ public class FractalViewBuilder implements Builder<Region> {
         textField.textProperty().bindBidirectional(boundProperty);
         textField.setText("20");
         return textField;
+    }
+
+    private void MakeProcessingWindow() {
+        String[] processingArgs = {"processing_window"};
+        ProcessingSketch processingSketch = new ProcessingSketch();
+        PApplet.runSketch(processingArgs, processingSketch);
     }
 }
