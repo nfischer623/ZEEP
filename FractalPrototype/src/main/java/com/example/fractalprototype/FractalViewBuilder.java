@@ -1,8 +1,11 @@
 package com.example.fractalprototype;
 
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +23,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Builder;
+import org.controlsfx.control.action.Action;
 import processing.core.PApplet;
 
 public class FractalViewBuilder implements Builder<Region> {
@@ -34,17 +39,22 @@ public class FractalViewBuilder implements Builder<Region> {
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
         results.setBottom(createExitButton());
+        MakeProcessingWindow(); // SHOULD NOT BE CALLED FROM HERE
         return results;
     }
 
     private Node createCenter() {
-        HBox results = new HBox(6, createSettingsBar(), createCanvas(Color.BLUE));
+        HBox results = new HBox(6, createSettingsBar(), createCanvas(Color.WHITE));
         results.setPadding(new Insets(20));
         return results;
     }
 
     private Node createSettingsBar() {
-        VBox vbox = new VBox(6, createBrushSizeBox(), createApplyButton());
+        VBox vbox = new VBox(6, createBrushSizeBox(), createApplyButton(),
+                createColorPicker(model.colorAProperty()),
+                createColorPicker(model.colorBProperty()),
+                createColorPicker(model.colorCProperty()),
+                createColorPicker(model.colorDProperty()));
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
     }
@@ -69,7 +79,6 @@ public class FractalViewBuilder implements Builder<Region> {
         canvas.setOnMouseDragged(paintHandler(gc));
         gc.setFill(color);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        MakeProcessingWindow(); // SHOULD NOT BE CALLED FROM HERE
         return canvas;
     }
 
@@ -81,7 +90,7 @@ public class FractalViewBuilder implements Builder<Region> {
                 double size = Double.parseDouble(model.getBrushSize());
                 double x = e.getX() - size / 2;
                 double y = e.getY() - size / 2;
-                gc.setFill(Color.WHITE);
+                gc.setFill(model.getColorA());
                 gc.fillOval(x, y, size, size);
             }
         };
@@ -102,9 +111,17 @@ public class FractalViewBuilder implements Builder<Region> {
         return textField;
     }
 
+    private Node createColorPicker(ObjectProperty<Color> colorProperty) {
+        ColorPicker colorPicker = new ColorPicker(colorProperty.get());
+        colorPicker.setOnAction(e -> {
+            colorProperty.set(colorPicker.getValue());
+        });
+        return colorPicker;
+    }
+
     private void MakeProcessingWindow() {
         String[] processingArgs = {"processing_window"};
-        ProcessingSketch processingSketch = new ProcessingSketch();
+        ProcessingSketch processingSketch = new ProcessingSketch(model);
         PApplet.runSketch(processingArgs, processingSketch);
     }
 }
