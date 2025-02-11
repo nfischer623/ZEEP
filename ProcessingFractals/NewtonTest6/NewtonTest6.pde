@@ -1,6 +1,6 @@
 //user's color picks
 //palette: #EDE048, #8CD89D, #4F6DFC (blue, yellow, green)
-color[] colorPicks = {#4F6DFC, color(50, 50, 175), color(50, 200, 150)};
+color[] colorPicks = {#4F6DFC, #3232AF, #32C896};
 
 float minx = -4;
 float maxx = 4;
@@ -8,7 +8,7 @@ float miny = -4;
 float maxy = 4;
 
 color myColor;
-int max_iter = 20;
+int max_iter = 15;
 
 //roots for x^3 - 1
 // 1 + 0i
@@ -23,22 +23,23 @@ float root3_i = -(sqrt(3)/2);
 
 void setup(){
   size(700, 700);
-  println(root3_i);
 }
 
 void draw(){
   loadPixels();
   
+  //for each pixel
   for (int x=0; x < width; x++){
     for (int y=0; y < height; y++){
       
+      //map math to smaller interval
       float a = map(x, 0, width, minx, maxx);
       float b = map(y, 0, height, miny, maxy);
       
       myColor = color(255, 255, 255);
-      
       int n = 0;
       
+      //run Newton's method n times
       while (n < max_iter){
         float [] newnum = NewtonsMethod(a,b);
         a = newnum[0];
@@ -46,6 +47,7 @@ void draw(){
         n+=1;
       }
       
+      //find closest root
       if ((distance(a, b, root1_real, root1_i) <= distance(a, b, root2_real, root2_i))
       && (distance(a, b, root1_real, root1_i) <= distance(a, b, root3_real, root3_i))){
         myColor = colorPicks[0];
@@ -67,19 +69,21 @@ void draw(){
     //end of for y  
     }
   //end of for x    
-  }
-  
+  }  
   updatePixels();
 //end of void draw()
 }
 
 float distance(float a, float b, float rootreal, float rooti){
+  //finds distance between a two points: (a, b) and (rootreal, rooti)
   float dis = sqrt((a - rootreal)*(a - rootreal) + (b - rooti)*(b - rooti));
-  //println(dis);
   return dis;
 }
 
 float [] NewtonsMethod(float a, float b){
+    //applies Newton's Method to a complex number a + bi
+    //Newton's Method: x(n+1) = xn - f(xn)/f'(xn)
+    //But broken down into real and imaginary parts
     float denominator = 3*(a*a*a*a + 2*a*a*b*b + b*b*b*b);
     a = a - ((a*a*a*a*a + 2*a*a*a*b*b - a*a + a*b*b*b*b +b*b)/denominator);
     b = b - ((a*a*a*a*b+ 2*a*a*b*b*b + 2*a*b + b*b*b*b*b)/denominator);

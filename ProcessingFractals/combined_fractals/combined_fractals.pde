@@ -12,7 +12,7 @@ int maxiter = 100;
 //palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //varieties: "mandelbrot", "julia", "newton"
-String variety = "mandelbrot";
+String variety = "julia";
 
 void setup(){
   size(1400, 1050);
@@ -25,30 +25,33 @@ void draw(){
   //for each pixel
   for (int x = 0; x < width; x++) {
     for (int y = 0; y < height; y++) {
-  
+      
       //puts math on a smaller interval
       var a = map(x, 0, width, minx, maxx);
       var b = map(y, 0, height, miny, maxy);
       
      //number of iterations
       var n = 0;
-      
+            
       if (variety == "mandelbrot"){
         n = mandelbrot(a, b, n);
+      }else
+      if (variety == "julia"){
+        n = julia(a, b, n);
       }
       
       //pixel location within a 1d array
       int location = (x + y*width);
       
       //grayscale color scheme if no given colors
-      if (colorPicks.length == 0) {
+      if (colorPicks.length <= 1) {
         var grayscale=map(n, 0, 100, 0, 250);
         //sets pixel color
         pixels[location]=color(grayscale);
       }
            
       //color scheme given user's picks
-      if (colorPicks.length > 0) {
+      if (colorPicks.length > 1) {
         addColor(n, location);
       }
 
@@ -152,6 +155,32 @@ int mandelbrot (float a, float b, int n){
     if (a*a + b*b > 4) {
       break;
     }
+    //increments iteration counter
+    n++;
+  }
+  return n;
+}
+
+int julia(float a, float b, int n){
+  float realc= map(mouseX, 0, width, -1, 1);
+  float imagc= map(mouseY, 0, height, -1, 1);
+  
+  while (n < maxiter) {
+    //(a+bi)^2 = a^2 + 2abi - b^2
+    // real component
+    var real= a*a - b*b;
+    //imaginary component
+    var imag = 2*a*b;
+    
+    //next iteration components
+    a=real + realc;
+    b=imag+ imagc;
+    
+    //checks if point is going towards infinity
+    if (a*a + b*b > 4) {
+      break;
+    }
+    
     //increments iteration counter
     n++;
   }
