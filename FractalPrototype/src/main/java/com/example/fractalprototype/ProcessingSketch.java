@@ -24,6 +24,10 @@ public class ProcessingSketch extends PApplet {
         this.model = model;
         //user's color picks
         //palette: #006699, #ae82fa, #f261b1, #ffb433
+        updateColors();
+    }
+
+    public void updateColors() {
         this.colorPicks[0] = color((int)(model.getColorA().getRed() * 255),
                 (int)(model.getColorA().getGreen() * 255),
                 (int)(model.getColorA().getBlue() * 255));

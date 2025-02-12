@@ -2,10 +2,7 @@ package com.example.fractalprototype;
 
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,14 +20,15 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Builder;
-import org.controlsfx.control.action.Action;
 import processing.core.PApplet;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
+    private ProcessingSketch sketch;
 
     public FractalViewBuilder(FractalModel model) {
         this.model = model;
+        this.sketch = new ProcessingSketch(model);
     }
 
     @Override
@@ -39,40 +37,45 @@ public class FractalViewBuilder implements Builder<Region> {
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
         results.setBottom(createExitButton());
-        MakeProcessingWindow(); // SHOULD NOT BE CALLED FROM HERE
         return results;
     }
 
     private Node createCenter() {
-        HBox results = new HBox(6, createSettingsBar(), createCanvas(Color.WHITE));
-        results.setPadding(new Insets(20));
+        HBox results = new HBox(6, createSettingsBar());
+        results.setPadding(new Insets(50));
         return results;
     }
 
     private Node createSettingsBar() {
-        VBox vbox = new VBox(6, createBrushSizeBox(), createApplyButton(),
+        VBox vbox = new VBox(6,
                 createColorPicker(model.colorAProperty()),
                 createColorPicker(model.colorBProperty()),
                 createColorPicker(model.colorCProperty()),
-                createColorPicker(model.colorDProperty()));
+                createColorPicker(model.colorDProperty()),
+                createDrawButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
     }
 
+    // no longer used
     private Node createBrushSizeBox() {
         HBox hbox = new HBox(6, new Label("Brush size:"), boundTextField(model.brushSizeProperty()));
         hbox.setAlignment(Pos.CENTER_LEFT);
         return hbox;
     }
 
-    private Node createApplyButton() {
-        Button applyButton = new Button("Apply");
-//        applyButton.setOnAction(this.interactor::saveBrushSize);
-        HBox results = new HBox(10, applyButton);
+    private Node createDrawButton() {
+        Button drawButton = new Button("Draw!");
+        drawButton.setOnAction(e -> {
+            this.sketch.updateColors();
+            MakeProcessingWindow();
+        });
+        HBox results = new HBox(10, drawButton);
         results.setAlignment(Pos.CENTER_RIGHT);
         return results;
     }
 
+    // no longer used
     private Canvas createCanvas(Color color) {
         Canvas canvas = new Canvas(600, 500);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -121,7 +124,6 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private void MakeProcessingWindow() {
         String[] processingArgs = {"processing_window"};
-        ProcessingSketch processingSketch = new ProcessingSketch(model);
-        PApplet.runSketch(processingArgs, processingSketch);
+        PApplet.runSketch(processingArgs, this.sketch);
     }
 }
