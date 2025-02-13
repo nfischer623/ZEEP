@@ -160,7 +160,7 @@ void saveZeep(){
 void loadZeep(){
   //loads .zeep file to regenerate fractal
  String [] loadedFrac = loadStrings("fractal.zeep"); 
- variety = loadedFrac[0];
+ //variety = loadedFrac[0];
  
  minX = float(loadedFrac[1]);
  maxX = float(loadedFrac[2]);

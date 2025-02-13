@@ -80,16 +80,16 @@ void draw() {
     for (int y = 0; y < height; y++) {
 
       //puts math on a smaller interval
-      var a = map(x, 0, width, minx, maxx);
-      var b = map(y, 0, height, miny, maxy);
+      double a = map(x, 0, width, minx, maxx);
+      double b = map(y, 0, height, miny, maxy);
       
      //number of iterations
-      var n = 0;
+      int n = 0;
       
       //real component
-      var origa = a;
+      double origa = a;
       //imaginary component
-      var origb = b;
+      double origb = b;
       
       //makes faster by setting center of mandelblobs to max iterations
       if (((a + .25)*(a + .25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
@@ -99,9 +99,9 @@ void draw() {
       while (n < maxiter) {
         //(a+bi)^2 = a^2 + 2abi - b^2
         // real component
-        var newreal = a*a - b*b;
+        double newreal = a*a - b*b;
         //imaginary component
-        var newcomplex = 2*a*b;
+        double newcomplex = 2*a*b;
         
         //next iteration components
         a = newreal + origa;
