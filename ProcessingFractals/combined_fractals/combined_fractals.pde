@@ -1,8 +1,10 @@
+JSONObject zeep;
+
 //graph size
-float minx = -2;
-float maxx = 2;
-float miny = -1.5;
-float maxy = 1.5;
+float minX = -2;
+float maxX = 2;
+float minY = -1.5;
+float maxY = 1.5;
 
 //max iterations
 int maxiter = 100;
@@ -12,7 +14,7 @@ int maxiter = 100;
 //palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //varieties: "mandelbrot", "julia", "newton"
-String variety = "julia";
+String variety = "mandelbrot";
 
 void setup(){
   size(1400, 1050);
@@ -27,8 +29,8 @@ void draw(){
     for (int y = 0; y < height; y++) {
       
       //puts math on a smaller interval
-      var a = map(x, 0, width, minx, maxx);
-      var b = map(y, 0, height, miny, maxy);
+      var a = map(x, 0, width, minX, maxX);
+      var b = map(y, 0, height, minY, maxY);
       
      //number of iterations
       var n = 0;
@@ -62,54 +64,63 @@ void draw(){
 
 void keyPressed(){
   //center point in window
-  float xCenter = (minx + maxx)/2;
-  float yCenter = (miny + maxy)/2;
+  float xCenter = (minX + maxX)/2;
+  float yCenter = (minY + maxY)/2;
   
-  float rangex = maxx - minx;
+  float rangex = maxX - minX;
   //zoom factor
   float zoomIn = .3 * rangex;
   float zoomOut = .9 * rangex;
   
   //zoom in
   if (key == '+' || key == '=') {
-    minx = xCenter - zoomIn;
-    maxx = xCenter + zoomIn;
-    miny = yCenter - .8*zoomIn;
-    maxy = yCenter + .8*zoomIn;
+    minX = xCenter - zoomIn;
+    maxX = xCenter + zoomIn;
+    minY = yCenter - .8*zoomIn;
+    maxY = yCenter + .8*zoomIn;
   }
   //zoom out
   if (key == '_' || key == '-') {
-    minx = xCenter - zoomOut;
-    maxx = xCenter + zoomOut;
-    miny = yCenter - .8*zoomOut;
-    maxy = yCenter + .8*zoomOut;
+    minX = xCenter - zoomOut;
+    maxX = xCenter + zoomOut;
+    minY = yCenter - .8*zoomOut;
+    maxY = yCenter + .8*zoomOut;
   }
   if (key == 'c' || key == 'C'){
-    println("Min X: ", minx, "Max X: ", maxx, "Min Y: ", miny, "Max Y: ", maxy);
+    println("Min X: ", minX, "Max X: ", maxX, "Min Y: ", minY, "Max Y: ", maxY);
+  }
+  if (key == 's' || key == 'S'){
+    saveImage();
+  }
+  if (key == 'z' || key == 'Z'){
+    saveZeep();
+  }  
+  if (key == 'l' || key == 'L'){
+    loadZeep();
   }
 }
 
 void mouseDragged(){
   //rate of change of movement based on scale of graph
-  float delta = .0025 * abs(maxx - minx);
+  float delta = .0025 * abs(maxX - minX);
   
   //determines direction mouse is moving in
   if (pmouseX < mouseX) {
     //shifts range that window sees
-    minx = minx - delta;
-    maxx = maxx - delta;
+    minX = minX - delta;
+    maxX = maxX - delta;
   }
   if (pmouseX > mouseX) {
-    minx = minx + delta;
-    maxx = maxx + delta;
+    minX = minX + delta;
+    maxX = maxX + delta;
   }
     if (pmouseY < mouseY) {
-    miny = miny - delta;
-    maxy = maxy - delta;
+    minY = minY - delta;
+    maxY = maxY - delta;
   }
   if (pmouseY > mouseY) {
-    miny = miny + delta;
-    maxy = maxy + delta;
+    minY = minY + delta;
+    maxY = maxY + delta;
   }
   
 }
@@ -128,61 +139,39 @@ void addColor(int n, int location){
     pixels[location]=color(myColor);
 }
 
-//Mandelbrot Fractal function
-int mandelbrot (float a, float b, int n){
-  //real component
-  var start_real = a;
-  //imaginary component
-  var start_i = b;
-  
-  //makes faster by setting center of mandelblobs to max iterations
-  if (((a + .25)*(a + .25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
-    n = maxiter;
-  }
-  
-  while (n < maxiter) {
-    //(a+bi)^2 = a^2 + 2abi - b^2
-    // real component
-    var new_real = a*a - b*b;
-    //imaginary component
-    var new_i = 2*a*b;
-    
-    //next iteration components
-    a = new_real + start_real;
-    b = new_i + start_i;
-    
-    //checks if point is going towards infinity
-    if (a*a + b*b > 4) {
-      break;
-    }
-    //increments iteration counter
-    n++;
-  }
-  return n;
+void saveImage(){
+  //creates "unique" file name based on date and time
+  String fileName = "myFractal" + String.valueOf(day()) + String.valueOf(hour()) + String.valueOf(minute()) + ".png";
+  //saves to sketch folder
+  save(fileName);
 }
 
-int julia(float a, float b, int n){
-  float realc= map(mouseX, 0, width, -1, 1);
-  float imagc= map(mouseY, 0, height, -1, 1);
-  
-  while (n < maxiter) {
-    //(a+bi)^2 = a^2 + 2abi - b^2
-    // real component
-    var real= a*a - b*b;
-    //imaginary component
-    var imag = 2*a*b;
-    
-    //next iteration components
-    a=real + realc;
-    b=imag+ imagc;
-    
-    //checks if point is going towards infinity
-    if (a*a + b*b > 4) {
-      break;
-    }
-    
-    //increments iteration counter
-    n++;
+void saveZeep(){
+  //saves fractal info to a .zeep file
+  String [] fracFacts = {variety, str(minX), str(maxX), str(minY), str(maxY)};
+  for (int i = 0; i < colorPicks.length; i++){
+    String strColor = str(colorPicks[i]);
+    fracFacts = append(fracFacts, strColor);
   }
-  return n;
+  saveStrings("fractal.zeep", fracFacts);
+}
+
+
+void loadZeep(){
+  //loads .zeep file to regenerate fractal
+ String [] loadedFrac = loadStrings("fractal.zeep"); 
+ variety = loadedFrac[0];
+ 
+ minX = float(loadedFrac[1]);
+ maxX = float(loadedFrac[2]);
+ minY = float(loadedFrac[3]);
+ maxY = float(loadedFrac[4]);
+ 
+ /*
+ color [] loadColors = {};
+ for (int i = 5; i < loadedFrac.length-5; i++){
+   loadColors = append(loadColors, unhex(loadedFrac[i]));
+ }
+ colorPicks = loadColors;
+ */
 }
