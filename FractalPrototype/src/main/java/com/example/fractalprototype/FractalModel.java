@@ -24,6 +24,16 @@ public class FractalModel {
 
     public Color getColorD() { return colorD.get(); }
 
+    public int getColorProcessingValue(Color color) {
+        int r = (int)(color.getRed() * 255);
+        int g = (int)(color.getGreen() * 255);
+        int b = (int)(color.getBlue() * 255);
+
+        // bit-shifting based on the processing.core.PApplet color() function
+        // why do they store their colors like this.
+        return -16777216 | r << 16 | g << 8 | b;
+    }
+
     public StringProperty brushSizeProperty() {
         return brushSize;
     }

@@ -18,35 +18,35 @@ import java.io.IOException;
 
 public class ProcessingSketch extends PApplet {
     private final FractalModel model;
+    private final int sketchWidth, sketchHeight;
     int[] colorPicks = new int[4];
 
-    public ProcessingSketch(FractalModel model) {
+    public ProcessingSketch(FractalModel model, int width, int height) {
         this.model = model;
-        //user's color picks
-        //palette: #006699, #ae82fa, #f261b1, #ffb433
-        updateColors();
+        this.sketchWidth = width;
+        this.sketchHeight = height;
+        // default palette: #006699, #ae82fa, #f261b1, #ffb433
+        // {0xFF006699, 0xFFAE82FA, 0xFFF261B1, 0xFFFFB433}
+        updateColors(false);
     }
 
-    public void updateColors() {
-        this.colorPicks[0] = color((int)(model.getColorA().getRed() * 255),
-                (int)(model.getColorA().getGreen() * 255),
-                (int)(model.getColorA().getBlue() * 255));
-        this.colorPicks[1] = color((int)(model.getColorB().getRed() * 255),
-                (int)(model.getColorB().getGreen() * 255),
-                (int)(model.getColorB().getBlue() * 255));
-        this.colorPicks[2] = color((int)(model.getColorC().getRed() * 255),
-                (int)(model.getColorC().getGreen() * 255),
-                (int)(model.getColorC().getBlue() * 255));
-        this.colorPicks[3] = color((int)(model.getColorD().getRed() * 255),
-                (int)(model.getColorD().getGreen() * 255),
-                (int)(model.getColorD().getBlue() * 255));
+    // this needs some work - needs safer rounding in case colors get weird
+    public void updateColors(boolean isRedraw) {
+        colorPicks[0] = model.getColorProcessingValue(model.getColorA());
+        colorPicks[1] = model.getColorProcessingValue(model.getColorB());
+        colorPicks[2] = model.getColorProcessingValue(model.getColorC());
+        colorPicks[3] = model.getColorProcessingValue(model.getColorD());
+        
+        if (isRedraw) {
+            redraw();
+        }
     }
 
-//    int[] colorPicks = {0xFF006699, 0xFFAE82FA, 0xFFF261B1, 0xFFFFB433};
-
-    //window size in pixels
     public void setup() {
-        /* size commented out by preprocessor */;
+        surface.setSize(sketchWidth, sketchHeight);
+        surface.setLocation(displayWidth / 3, (displayHeight - sketchHeight) / 2);
+        // NOTE: this will implicitly truncate any non-int results
+        // may want to make explicit in the future
     }
 
     //graph size

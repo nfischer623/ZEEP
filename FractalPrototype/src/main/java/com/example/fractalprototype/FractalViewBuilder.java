@@ -28,7 +28,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     public FractalViewBuilder(FractalModel model) {
         this.model = model;
-        this.sketch = new ProcessingSketch(model);
+        this.sketch = new ProcessingSketch(model, 875, 700);
     }
 
     @Override
@@ -37,6 +37,7 @@ public class FractalViewBuilder implements Builder<Region> {
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
         results.setBottom(createExitButton());
+        MakeProcessingWindow();
         return results;
     }
 
@@ -67,8 +68,7 @@ public class FractalViewBuilder implements Builder<Region> {
     private Node createDrawButton() {
         Button drawButton = new Button("Draw!");
         drawButton.setOnAction(e -> {
-            this.sketch.updateColors();
-            MakeProcessingWindow();
+            sketch.updateColors(true);
         });
         HBox results = new HBox(10, drawButton);
         results.setAlignment(Pos.CENTER_RIGHT);
@@ -101,7 +101,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createExitButton() {
         Button exitButton = new Button("Exit");
-        exitButton.setOnAction(evt -> Platform.exit());
+        exitButton.setOnAction(_ -> exitApplication());
         HBox results = new HBox(10, exitButton);
         results.setAlignment(Pos.CENTER_RIGHT);
         return results;
@@ -125,5 +125,10 @@ public class FractalViewBuilder implements Builder<Region> {
     private void MakeProcessingWindow() {
         String[] processingArgs = {"processing_window"};
         PApplet.runSketch(processingArgs, this.sketch);
+    }
+
+    private void exitApplication() {
+        sketch.exit();
+        Platform.exit();
     }
 }
