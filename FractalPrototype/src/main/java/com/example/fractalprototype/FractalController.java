@@ -6,14 +6,10 @@ import javafx.scene.layout.Region;
 import javafx.util.Builder;
 
 public class FractalController {
-    private Builder<Region> viewBuilder;
-//    private FractalInteractor interactor;
+    private final FractalViewBuilder viewBuilder;
+    private FractalModel model = new FractalModel();
 
     public FractalController() {
-        FractalModel model = new FractalModel();
-//        interactor = new FractalInteractor(model);
-//        viewBuilder = new FractalViewBuilder(model, interactor::saveBrushSize);
-//        viewBuilder = new FractalViewBuilder(model, interactor);
         viewBuilder = new FractalViewBuilder(model);
     }
 
