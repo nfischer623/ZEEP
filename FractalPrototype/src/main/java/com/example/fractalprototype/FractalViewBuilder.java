@@ -24,11 +24,11 @@ import processing.core.PApplet;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
-    private ProcessingSketch sketch;
+    private FractalSketch sketch;
 
     public FractalViewBuilder(FractalModel model) {
         this.model = model;
-        this.sketch = new ProcessingSketch(model, 875, 700);
+        this.sketch = new MandelbrotSketch(model, 875, 700);
     }
 
     @Override
