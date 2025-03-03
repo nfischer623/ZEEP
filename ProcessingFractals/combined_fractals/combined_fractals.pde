@@ -1,5 +1,3 @@
-JSONObject zeep;
-
 //graph size
 float minX = -2;
 float maxX = 2;
@@ -144,6 +142,7 @@ void saveImage(){
   String fileName = "myFractal" + String.valueOf(day()) + String.valueOf(hour()) + String.valueOf(minute()) + ".png";
   //saves to sketch folder
   save(fileName);
+  println("Image saved as " + fileName);
 }
 
 void saveZeep(){
@@ -154,6 +153,7 @@ void saveZeep(){
     fracFacts = append(fracFacts, strColor);
   }
   saveStrings("fractal.zeep", fracFacts);
+  println("Fractal saved as 'fractal.zeep'");
 }
 
 
@@ -174,4 +174,5 @@ void loadZeep(){
  }
  colorPicks = loadColors;
  */
+ println("'fractal.zeep' loaded");
 }
