@@ -10,7 +10,7 @@ int maxiter = 100;
 //user input:
 //Ellie's palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {};
-String variety = "mandelbrot";
+String variety = "julia";
 
 color myColor = 0;
 
@@ -38,7 +38,7 @@ void draw(){
      //number of iterations
       var n = 0;
             
-      n = myMandelbrot(a, b, n);
+      n = myJulia(a, b, n);
            
       //pixel location within a 1d array
       int location = (x + y*width);
@@ -49,37 +49,46 @@ void draw(){
     updatePixels();
 }
 
-int myMandelbrot (float a, float b, int n){
-  /*Mandelbrot Fractal function
+//julia set variables
+boolean juliaPaused = false;
+float juliaX;
+float juliaY;
+
+int myJulia(float a, float b, int n){
+  /*Function to render Julia set fractals
   Takes in complex number a+bi, max number of iterations, n
   Returns how many iterations were completed, n
   */
+  float realc;
+  float imagc;
   
-  //real component
-  var start_real = a;
-  //imaginary component
-  var start_i = b;
-  
-  //makes faster by setting center of mandelblobs to max iterations
-  if (((a + .25)*(a + .25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
-    n = maxiter;
+  if (juliaPaused==false){
+    //set Julia constant based on mouse
+    realc= map(mouseX, 0, width, -1, 1);
+    imagc= map(mouseY, 0, height, -.75, .75);
+  }else{
+    realc= map(juliaX, 0, width, -1, 1);
+    imagc=map(juliaY, 0, height, -.75, .75);
   }
   
   while (n < maxiter) {
     //(a+bi)^2 = a^2 + 2abi - b^2
     // real component
-    var new_real = a*a - b*b;
+    var real= a*a - b*b;
     //imaginary component
-    var new_i = 2*a*b;
+    var imag = 2*a*b;
     
     //next iteration components
-    a = new_real + start_real;
-    b = new_i + start_i;
+    a=real + realc;
+    b=imag+ imagc;
     
     //checks if point is going towards infinity
     if (a*a + b*b > 4) {
       break;
     }
+    //funky filter component
+    //nsmooth = n + 1 - log(log(abs(a)))/log(2);
+    
     //increments iteration counter
     n++;
   }

@@ -21,9 +21,9 @@ void addColor(int n, int location){
   }
   if (filterOn){ 
     //https://stackoverflow.com/questions/369438/smooth-spectrum-for-mandelbrot-set-rendering
+    
     myColor = color(.95*hue(myColor)+10*nsmooth, .6*saturation(myColor), brightness(myColor));
   }
-    
   //sets pixel color
   pixels[location]=color(myColor);
 }

@@ -8,10 +8,16 @@ float maxY = 1.5;
 int maxiter = 100;
 
 //user inputs:
-//palette: #006699, #ae82fa, #f261b1, #ffb433
+//Ellie's palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //varieties: "mandelbrot", "julia", "newton"
-String variety = "mandelbrot";
+String variety = "julia";
+
+color myColor = 0;
+
+//funky filter
+boolean filterOn = false;
+float nsmooth;
 
 void setup(){
   size(1400, 1050);
@@ -44,90 +50,9 @@ void draw(){
       
       //pixel location within a 1d array
       int location = (x + y*width);
-      
-      //grayscale color scheme if no given colors
-      if (colorPicks.length <= 1) {
-        var grayscale=map(n, 0, 100, 0, 250);
-        //sets pixel color
-        pixels[location]=color(grayscale);
-      }
            
-      //color scheme given user's picks
-      if (colorPicks.length > 1) {
-        addColor(n, location);
-      }
-
+      addColor(n, location);     
         }  
       }
       updatePixels();
     }
-
-void keyPressed(){
-  //center point in window
-  float xCenter = (minX + maxX)/2;
-  float yCenter = (minY + maxY)/2;
-  
-  float rangex = maxX - minX;
-  //zoom factor
-  float zoomIn = .3 * rangex;
-  float zoomOut = .9 * rangex;
-  
-  //zoom in
-  if (key == '+' || key == '=') {
-    minX = xCenter - zoomIn;
-    maxX = xCenter + zoomIn;
-    minY = yCenter - .8*zoomIn;
-    maxY = yCenter + .8*zoomIn;
-  }
-  //zoom out
-  if (key == '_' || key == '-') {
-    minX = xCenter - zoomOut;
-    maxX = xCenter + zoomOut;
-    minY = yCenter - .8*zoomOut;
-    maxY = yCenter + .8*zoomOut;
-  }
-  //save as image
-  if (key == 's' || key == 'S'){
-    saveImage();
-  }
-  //save as .zeep
-  if (key == 'z' || key == 'Z'){
-    saveZeep();
-  }  
-  //load .zeep
-  if (key == 'l' || key == 'L'){
-    loadZeep();
-  }
-  if (key == 'p' || key == 'P'){
-    juliaPaused = !juliaPaused;
-    if (juliaPaused==true){
-      juliaX = mouseX;
-      juliaY = mouseY;
-    }
-  }
-}
-
-void mouseDragged(){
-  //rate of change of movement based on scale of graph
-  float delta = .0025 * abs(maxX - minX);
-  
-  //determines direction mouse is moving in
-  if (pmouseX < mouseX) {
-    //shifts range that window sees
-    minX = minX - delta;
-    maxX = maxX - delta;
-  }
-  if (pmouseX > mouseX) {
-    minX = minX + delta;
-    maxX = maxX + delta;
-  }
-    if (pmouseY < mouseY) {
-    minY = minY - delta;
-    maxY = maxY - delta;
-  }
-  if (pmouseY > mouseY) {
-    minY = minY + delta;
-    maxY = maxY + delta;
-  }
-  
-}
