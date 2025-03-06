@@ -24,4 +24,7 @@ public abstract class FractalSketch extends PApplet {
             redraw();
         }
     }
+
+    public abstract void setup();
+    public abstract void draw();
 }

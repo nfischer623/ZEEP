@@ -28,7 +28,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     public FractalViewBuilder(FractalModel model) {
         this.model = model;
-        this.sketch = new MandelbrotSketch(model, 875, 700);
+        this.sketch = new JuliaSketch(model, 875, 700);
     }
 
     @Override
