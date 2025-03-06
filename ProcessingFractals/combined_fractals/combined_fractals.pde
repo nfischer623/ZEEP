@@ -12,7 +12,7 @@ int maxiter = 100;
 //palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //varieties: "mandelbrot", "julia", "newton"
-String variety = "mandelbrot";
+String variety = "julia";
 
 void setup(){
   size(1400, 1050);
@@ -84,17 +84,24 @@ void keyPressed(){
     minY = yCenter - .8*zoomOut;
     maxY = yCenter + .8*zoomOut;
   }
-  if (key == 'c' || key == 'C'){
-    println("Min X: ", minX, "Max X: ", maxX, "Min Y: ", minY, "Max Y: ", maxY);
-  }
+  //save as image
   if (key == 's' || key == 'S'){
     saveImage();
   }
+  //save as .zeep
   if (key == 'z' || key == 'Z'){
     saveZeep();
   }  
+  //load .zeep
   if (key == 'l' || key == 'L'){
     loadZeep();
+  }
+  if (key == 'p' || key == 'P'){
+    juliaPaused = !juliaPaused;
+    if (juliaPaused==true){
+      juliaX = mouseX;
+      juliaY = mouseY;
+    }
   }
 }
 
@@ -121,58 +128,4 @@ void mouseDragged(){
     maxY = maxY + delta;
   }
   
-}
-
-void addColor(int n, int location){
-    var myColor = 0;
-  
-    int numColors = colorPicks.length;
-    for (int i=0; i<numColors; i++){
-      //divides number of iterations into groups based on number of colors
-      if (n >= (i*maxiter)/numColors && n <= ((i+1)*maxiter)/numColors) {
-        myColor=colorPicks[i];
-      }
-  }
-    //sets pixel color
-    pixels[location]=color(myColor);
-}
-
-void saveImage(){
-  //creates "unique" file name based on date and time
-  String fileName = "myFractal" + String.valueOf(day()) + String.valueOf(hour()) + String.valueOf(minute()) + ".png";
-  //saves to sketch folder
-  save(fileName);
-  println("Image saved as " + fileName);
-}
-
-void saveZeep(){
-  //saves fractal info to a .zeep file
-  String [] fracFacts = {variety, str(minX), str(maxX), str(minY), str(maxY)};
-  for (int i = 0; i < colorPicks.length; i++){
-    String strColor = str(colorPicks[i]);
-    fracFacts = append(fracFacts, strColor);
-  }
-  saveStrings("fractal.zeep", fracFacts);
-  println("Fractal saved as 'fractal.zeep'");
-}
-
-
-void loadZeep(){
-  //loads .zeep file to regenerate fractal
- String [] loadedFrac = loadStrings("fractal.zeep"); 
- //variety = loadedFrac[0];
- 
- minX = float(loadedFrac[1]);
- maxX = float(loadedFrac[2]);
- minY = float(loadedFrac[3]);
- maxY = float(loadedFrac[4]);
- 
- /*
- color [] loadColors = {};
- for (int i = 5; i < loadedFrac.length-5; i++){
-   loadColors = append(loadColors, unhex(loadedFrac[i]));
- }
- colorPicks = loadColors;
- */
- println("'fractal.zeep' loaded");
 }

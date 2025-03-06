@@ -1,5 +1,3 @@
-boolean juliaPaused = false;
-
 int mandelbrot (float a, float b, int n){
   /*Mandelbrot Fractal function
   Takes in complex number a+bi, max number of iterations, n
@@ -31,37 +29,6 @@ int mandelbrot (float a, float b, int n){
     if (a*a + b*b > 4) {
       break;
     }
-    //increments iteration counter
-    n++;
-  }
-  return n;
-}
-
-int julia(float a, float b, int n){
-  /*Function to render Julia set fractals
-  Takes in complex number a+bi, max number of iterations, n
-  Returns how many iterations were completed, n
-  */
-  
-  float realc= map(mouseX, 0, width, -1, 1);
-  float imagc= map(mouseY, 0, height, -1, 1);
-  
-  while (n < maxiter) {
-    //(a+bi)^2 = a^2 + 2abi - b^2
-    // real component
-    var real= a*a - b*b;
-    //imaginary component
-    var imag = 2*a*b;
-    
-    //next iteration components
-    a=real + realc;
-    b=imag+ imagc;
-    
-    //checks if point is going towards infinity
-    if (a*a + b*b > 4) {
-      break;
-    }
-    
     //increments iteration counter
     n++;
   }

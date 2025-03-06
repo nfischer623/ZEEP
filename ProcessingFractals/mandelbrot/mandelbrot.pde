@@ -5,13 +5,18 @@ color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //window size in pixels
 void setup() {
   size(1400, 1050);
+  colorMode(HSB);
 }
+
+boolean filterOn = false;
 
 //graph size
 float minx = -2.5;
 float maxx = 1.5;
 float miny = -1.5;
 float maxy = 1.5;
+
+float nsmooth;
 
 //max iterations
 int maxiter = 100;
@@ -68,6 +73,14 @@ void keyPressed(){
   if (key == 'c' || key == 'C'){
     println("Min X: ", minx, "Max X: ", maxx, "Min Y: ", miny, "Max Y: ", maxy);
   }
+    //save as image
+  if (key == 's' || key == 'S'){
+    saveImage();
+  }
+  if (key == 'f' || key == 'F'){
+    filterOn = !filterOn;
+  }  
+            
 }
 
 
@@ -80,16 +93,16 @@ void draw() {
     for (int y = 0; y < height; y++) {
 
       //puts math on a smaller interval
-      double a = map(x, 0, width, minx, maxx);
-      double b = map(y, 0, height, miny, maxy);
+      float a = map(x, 0, width, minx, maxx);
+      float b = map(y, 0, height, miny, maxy);
       
      //number of iterations
       int n = 0;
       
       //real component
-      double origa = a;
+      float origa = a;
       //imaginary component
-      double origb = b;
+      float origb = b;
       
       //makes faster by setting center of mandelblobs to max iterations
       if (((a + .25)*(a + .25) + .81*b*b <= .25) || ((a+1)*(a+1) + b*b <= .06)){
@@ -99,16 +112,16 @@ void draw() {
       while (n < maxiter) {
         //(a+bi)^2 = a^2 + 2abi - b^2
         // real component
-        double newreal = a*a - b*b;
+        float newreal = a*a - b*b;
         //imaginary component
-        double newcomplex = 2*a*b;
+        float newcomplex = 2*a*b;
         
         //next iteration components
         a = newreal + origa;
         b = newcomplex + origb;
         
         //checks if point is going towards infinity
-        if (a*a + b*b > 4) {
+        if ((a*a + b*b) > 4) {
           break;
         }
         //increments iteration counter
@@ -124,16 +137,26 @@ void draw() {
         //sets pixel color
         pixels[location]=color(grayscale);
       }
-           
+                                      
       //color scheme given user's picks
       if (colorPicks.length > 0) {
-        var myColor = 0;
+        color myColor = colorPicks[0];
       
         int numColors = colorPicks.length;
-        for (int i=0; i<numColors; i++){
+        for (int i=0; i < numColors; i++){
           //divides number of iterations into groups based on number of colors
           if (n >= (i*maxiter)/numColors && n <= ((i+1)*maxiter)/numColors) {
             myColor=colorPicks[i];
+            //nsmooth = n + 1 - (log(log(sqrt(a*a+b*b))))/log(2);
+            
+            //myColor = color(.95*hue(myColor)+10*nsmooth, .6*saturation(myColor), brightness(myColor));
+            
+          //https://stackoverflow.com/questions/369438/smooth-spectrum-for-mandelbrot-set-rendering
+          if (filterOn){
+             nsmooth = n + 1 - log(log(abs(a)))/log(2); 
+             //colorMode(HSB);
+             myColor = color(.95*hue(myColor)+10*nsmooth, .6*saturation(myColor), brightness(myColor));
+          }
           }
       }
         //sets pixel color
@@ -144,3 +167,12 @@ void draw() {
       }
       updatePixels();
     }
+    
+void saveImage(){
+  //creates "unique" file name based on date and time
+  String fileName = "myFractal" + String.valueOf(month()) + "_" + String.valueOf(day()) + "_" 
+                    + String.valueOf(hour()) + String.valueOf(minute()) + ".png";
+  //saves to sketch folder
+  save(fileName);
+  println("Image saved as " + fileName);
+}

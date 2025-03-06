@@ -1,7 +1,3 @@
-void setup() {
-  size(1400, 1050);
-}
-
 //graph size
 float minx = -2;
 float maxx = 2;
@@ -11,45 +7,13 @@ float maxy = 1.5;
 //max iterations
 int maxiter = 100;
 
-boolean paused=false;
+boolean paused = false;
 
-void keyPressed(){
-  if (key == 'p' || key == 'P'){
-    paused = !paused;
-    if (paused==true){
-      println("Paused");
-    }
-    if (paused==false){
-      println("Playing");
-    }
-  }
-  
-  //center point in window
-  float xCenter = (minx + maxx)/2;
-  float yCenter = (miny + maxy)/2;
-  
-  float rangex = maxx - minx;
-  //zoom factor
-  float zoomIn = .3*rangex;
-  float zoomOut = .9*rangex;
-  
-  //zoom in
-  if (key == '+' || key == '=') {
-    minx = xCenter - zoomIn;
-    maxx = xCenter + zoomIn;
-    miny = yCenter - .8*zoomIn;
-    maxy = yCenter + .8*zoomIn;
-  }
-  //zoom out
-  if (key == '_' || key == '-') {
-    minx = xCenter - zoomOut;
-    maxx = xCenter + zoomOut;
-    miny = yCenter - .8*zoomOut;
-    maxy = yCenter + .8*zoomOut;
-  }
-  if (key == 'c' || key == 'C'){
-    println("Min X: ", minx, "Max X: ", maxx, "Min Y: ", miny, "Max Y: ", maxy);
-  }
+float myX;
+float myY;
+
+void setup() {
+  size(1400, 1050);
 }
 
 void draw() {
@@ -65,8 +29,8 @@ void draw() {
     imagc= map(mouseY, 0, height, -1, 1);
   }
   if (paused == true){
-    realc= int(map(mouseX, 0, width, -1, 1));
-    imagc=int(map(mouseY, 0, height, -1, 1));
+    realc= map(myX, 0, width, -1, 1);
+    imagc=map(myY, 0, height, -1, 1);
   }
   
   boolean clicked=false;
@@ -105,14 +69,10 @@ void draw() {
         //increments iteration counter
         n++;
       }
-    
-
-
       
       var red=map(n, 0, 50, 0, 250);
       var green=map(n, 0, maxiter, 0, 250);
       var blue=map(n, 0, 50, 0, 250);
-
       
       //pixel location within a 1d array
       int location= (x + y*width);
@@ -130,9 +90,43 @@ void draw() {
   //}
       updatePixels();
     }
-
-//void mouseClicked() {
-  //  print("click");
-    //boolean clicked=false;
-
-  //}
+    
+void keyPressed(){
+  if (key == 'p' || key == 'P'){
+    paused = !paused;
+    if (paused==true){
+      println("Paused");
+      myX = mouseX;
+      myY = mouseY;
+    }
+    if (paused==false){
+      println("Playing");
+    }
+  }
+  //center point in window
+  float xCenter = (minx + maxx)/2;
+  float yCenter = (miny + maxy)/2;
+  
+  float rangex = maxx - minx;
+  //zoom factor
+  float zoomIn = .3*rangex;
+  float zoomOut = .9*rangex;
+  
+  //zoom in
+  if (key == '+' || key == '=') {
+    minx = xCenter - zoomIn;
+    maxx = xCenter + zoomIn;
+    miny = yCenter - .8*zoomIn;
+    maxy = yCenter + .8*zoomIn;
+  }
+  //zoom out
+  if (key == '_' || key == '-') {
+    minx = xCenter - zoomOut;
+    maxx = xCenter + zoomOut;
+    miny = yCenter - .8*zoomOut;
+    maxy = yCenter + .8*zoomOut;
+  }
+  if (key == 'c' || key == 'C'){
+    println("Min X: ", minx, "Max X: ", maxx, "Min Y: ", miny, "Max Y: ", maxy);
+  }
+}
