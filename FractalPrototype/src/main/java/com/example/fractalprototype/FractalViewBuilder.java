@@ -52,8 +52,7 @@ public class FractalViewBuilder implements Builder<Region> {
                 createColorPicker(model.colorAProperty()),
                 createColorPicker(model.colorBProperty()),
                 createColorPicker(model.colorCProperty()),
-                createColorPicker(model.colorDProperty()),
-                createDrawButton());
+                createColorPicker(model.colorDProperty()));
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
     }
@@ -65,6 +64,7 @@ public class FractalViewBuilder implements Builder<Region> {
         return hbox;
     }
 
+    // no longer used
     private Node createDrawButton() {
         Button drawButton = new Button("Draw!");
         drawButton.setOnAction(e -> {
@@ -118,6 +118,7 @@ public class FractalViewBuilder implements Builder<Region> {
         ColorPicker colorPicker = new ColorPicker(colorProperty.get());
         colorPicker.setOnAction(e -> {
             colorProperty.set(colorPicker.getValue());
+            sketch.updateColors(true);
         });
         return colorPicker;
     }
