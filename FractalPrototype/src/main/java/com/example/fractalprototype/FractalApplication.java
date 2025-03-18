@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -17,13 +18,10 @@ public class FractalApplication extends Application {
         launch(args);
     }
 
-//    @Override
-//    public void start(Stage primaryStage) {
-//        Scene scene = new Scene(createContent(), 1000, 800);
-//        primaryStage.setTitle("Fractal Capstone v0.1");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
+
+//    private Region juliaSceneRoot;
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(new FractalController().getView());
@@ -37,24 +35,4 @@ public class FractalApplication extends Application {
         primaryStage.setX(x);
         primaryStage.setY(y);
     }
-
-//    private Region createContent() {
-//        HBox results = new HBox(20, createButton(), createCanvas(Color.BLUE));
-//        results.setAlignment(Pos.CENTER);
-//        return results;
-//    }
-//
-//    private Button createButton() {
-//        Button results = new Button("Click me!");
-//        //results.setOnAction(evt -> ...);
-//        return results;
-//    }
-//
-//    private Canvas createCanvas(Color color) {
-//        Canvas canvas = new Canvas(600, 500);
-//        GraphicsContext gc = canvas.getGraphicsContext2D();
-//        gc.setFill(color);
-//        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-//        return canvas;
-//    }
 }
