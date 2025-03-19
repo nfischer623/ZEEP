@@ -44,7 +44,21 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>  </dependencies>
+    </dependency>
+    <dependency>
+      <groupId>org.processing</groupId>
+      <artifactId>core</artifactId>
+      <version>4.3.2</version>
+      <type>pom</type>
+    </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>jogamp-remote</id>
+            <name>jogamp mirror</name>
+            <url>https://www.jogamp.org/deployment/maven/</url>
+        </repository>
+    </repositories>
 
   <build>
     <plugins>
