@@ -23,6 +23,16 @@ public class FractalSketch extends PApplet {
     }
 
 
+    public void saveImage(){
+        //creates "unique" file name based on date and time
+        String fileName = "myFractal" + String.valueOf(month()) + "_" + String.valueOf(day()) + "_"
+                + String.valueOf(hour()) + String.valueOf(minute()) + String.valueOf(second())+ ".png";
+        //saves to sketch folder
+        save(fileName);
+        println("Image saved as " + fileName);
+    }
+
+
     public void setup() {
         surface.setSize(sketchWidth, sketchHeight);
         surface.setLocation(displayWidth / 3, (displayHeight - sketchHeight) / 2);

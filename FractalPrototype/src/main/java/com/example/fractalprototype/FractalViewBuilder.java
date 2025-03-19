@@ -53,7 +53,8 @@ public class FractalViewBuilder implements Builder<Region> {
                 createColorPicker(model.colorBProperty()),
                 createColorPicker(model.colorCProperty()),
                 createColorPicker(model.colorDProperty()),
-                createFractalDropdown());
+                createFractalDropdown(),
+                createSaveImageButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
     }
@@ -87,6 +88,15 @@ public class FractalViewBuilder implements Builder<Region> {
             sketch.redraw();
         });
         return dropdown;
+    }
+
+
+    private Node createSaveImageButton() {
+        Button saveButton = new Button("Save as PNG");
+        saveButton.setOnAction(e -> {
+            sketch.saveImage();
+        });
+        return saveButton;
     }
 
 
