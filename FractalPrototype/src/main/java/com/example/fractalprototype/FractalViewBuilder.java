@@ -13,19 +13,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Builder;
 import processing.core.PApplet;
 
+import java.io.File;
 import java.util.Locale;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
     private final FractalSketch sketch;
+    private final FileChooser fileChooser;
+    private final Stage stage;
 
 
-    public FractalViewBuilder(FractalModel model) {
+    public FractalViewBuilder(FractalModel model, Stage stage) {
         this.model = model;
         this.sketch = new FractalSketch(model, 875, 700);
+        this.fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        this.stage = stage;
     }
 
 
@@ -94,7 +103,13 @@ public class FractalViewBuilder implements Builder<Region> {
     private Node createSaveImageButton() {
         Button saveButton = new Button("Save as PNG");
         saveButton.setOnAction(e -> {
-            sketch.saveImage();
+            fileChooser.setInitialFileName("myFractal");
+            fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+            File file = fileChooser.showSaveDialog(stage);
+            if (file != null) {
+                String fileName = file.getAbsolutePath();
+                sketch.saveImage(fileName);
+            }
         });
         return saveButton;
     }

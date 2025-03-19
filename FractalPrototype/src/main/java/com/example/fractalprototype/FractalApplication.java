@@ -24,7 +24,7 @@ public class FractalApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Scene scene = new Scene(new FractalController().getView());
+        Scene scene = new Scene(new FractalController(primaryStage).getView());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Fractal Capstone v0.1");
         primaryStage.show();
