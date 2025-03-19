@@ -4,15 +4,11 @@ import javafx.beans.property.*;
 import javafx.scene.paint.Color;
 
 public class FractalModel {
-    private final StringProperty brushSize = new SimpleStringProperty("");
     private final ObjectProperty<Color> colorA = new SimpleObjectProperty<Color>(Color.rgb(0,102,153));
     private final ObjectProperty<Color> colorB = new SimpleObjectProperty<Color>(Color.rgb(174,130,250));
     private final ObjectProperty<Color> colorC = new SimpleObjectProperty<Color>(Color.rgb(242,97,177));
     private final ObjectProperty<Color> colorD = new SimpleObjectProperty<Color>(Color.rgb(255,180,51));
-
-    public String getBrushSize() {
-        return brushSize.get();
-    }
+    private final StringProperty fractalType = new SimpleStringProperty("Mandelbrot");
 
     public Color getColorA() {
         return colorA.get();
@@ -24,6 +20,9 @@ public class FractalModel {
 
     public Color getColorD() { return colorD.get(); }
 
+    public String getFractalType() { return fractalType.get(); }
+
+
     public int getColorProcessingValue(Color color) {
         int r = (int)(color.getRed() * 255);
         int g = (int)(color.getGreen() * 255);
@@ -34,9 +33,6 @@ public class FractalModel {
         return -16777216 | r << 16 | g << 8 | b;
     }
 
-    public StringProperty brushSizeProperty() {
-        return brushSize;
-    }
 
     public ObjectProperty<Color> colorAProperty() {
         return colorA;
@@ -48,9 +44,8 @@ public class FractalModel {
 
     public ObjectProperty<Color> colorDProperty() { return colorD; }
 
-    public void setBrushSize(String brushSize) {
-        this.brushSize.set(brushSize);
-    }
+    public StringProperty fractalTypeProperty() { return fractalType; }
+
 
     public void setColorA(Color color) {
         this.colorA.set(color);
@@ -67,4 +62,6 @@ public class FractalModel {
     public void setColorD(Color color) {
         this.colorD.set(color);
     }
+
+    public void setFractalType(String type) { this.fractalType.set(type); }
 }
