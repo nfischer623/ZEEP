@@ -36,7 +36,7 @@ void draw(){
       var b = map(y, 0, height, minY, maxY);
       
      //number of iterations
-      var n = 0;
+      int n = 0;
             
       n = myJulia(a, b, n);
            
@@ -80,7 +80,7 @@ int myJulia(float a, float b, int n){
     
     //next iteration components
     a=real + realc;
-    b=imag+ imagc;
+    b=imag + imagc;
     
     //checks if point is going towards infinity
     if (a*a + b*b > 4) {

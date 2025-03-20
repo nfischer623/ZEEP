@@ -9,7 +9,7 @@ int maxiter = 100;
 
 //user input:
 //Ellie's palette: #006699, #ae82fa, #f261b1, #ffb433
-color[] colorPicks = {};
+color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 String variety = "mandelbrot";
 
 color myColor = 0;
@@ -36,7 +36,7 @@ void draw(){
       var b = map(y, 0, height, minY, maxY);
       
      //number of iterations
-      var n = 0;
+      int n = 0;
             
       n = myMandelbrot(a, b, n);
            

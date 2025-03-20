@@ -21,9 +21,25 @@ void addColor(int n, int location){
   }
   if (filterOn){ 
     //https://stackoverflow.com/questions/369438/smooth-spectrum-for-mandelbrot-set-rendering
-    
     myColor = color(.95*hue(myColor) + 10*nsmooth, .6*saturation(myColor), brightness(myColor));
   }
+    
   //sets pixel color
   pixels[location]=color(myColor);
+}
+
+void rootColor(float a, float b, int location){
+  //find closest root
+  if ((distance(a, b, root1_real, root1_i) <= distance(a, b, root2_real, root2_i))
+  && (distance(a, b, root1_real, root1_i) <= distance(a, b, root3_real, root3_i))){
+    myColor = colorPicks[0];
+  }else
+  
+  if ((distance(a, b, root2_real, root2_i) < distance(a, b, root1_real, root1_i))
+  && (distance(a, b, root2_real, root2_i) <= distance(a, b, root3_real, root3_i))){
+    myColor = colorPicks[1];
+  }else{
+    myColor = colorPicks[2];
+  }
+  pixels[location] = myColor;
 }
