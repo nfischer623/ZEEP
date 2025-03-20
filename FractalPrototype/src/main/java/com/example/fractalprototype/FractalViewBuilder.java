@@ -43,7 +43,8 @@ public class FractalViewBuilder implements Builder<Region> {
         BorderPane results = new BorderPane();
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
-        results.setBottom(createExitButton());
+//        results.setBottom(createExitButton());
+        results.setBottom(createBottom());
         MakeProcessingWindow();
         return results;
     }
@@ -51,7 +52,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createCenter() {
         HBox results = new HBox(6, createSettingsBar());
-        results.setPadding(new Insets(50));
+        results.setPadding(new Insets(25));
         return results;
     }
 
@@ -66,6 +67,18 @@ public class FractalViewBuilder implements Builder<Region> {
                 createSaveImageButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
+    }
+
+
+    private Node createBottom() {
+        Label controls = new Label(
+                "Click + drag to move fractal\n" +
+                "+/- key to zoom in/out\n" +
+                "'F' to enable Funky Mode\n" +
+                        "Right-click to pause (Julia only)");
+        HBox results = new HBox(6, controls, createExitButton());
+        results.setPadding(new Insets(50));
+        return results;
     }
 
 
