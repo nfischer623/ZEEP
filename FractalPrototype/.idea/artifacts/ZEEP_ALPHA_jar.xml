@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="FractalPrototypeALPHA:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/FractalPrototypeALPHA_jar</output-path>
+  <artifact type="jar" name="ZEEP-ALPHA:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ZEEP_ALPHA_jar</output-path>
     <root id="archive" name="FractalPrototype.jar">
       <element id="module-output" name="FractalPrototype" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jogamp/gluegen/gluegen-rt/2.5.0/gluegen-rt-2.5.0.jar" path-in-jar="/" />
