@@ -19,7 +19,9 @@ boolean filterOn = false;
 float nsmooth;
 
 void setup(){
+  //4:3 ratio
   size(1400, 1050);
+  //hue saturation brightness
   colorMode(HSB);
 }
 
@@ -37,21 +39,22 @@ void draw(){
       
      //number of iterations
       int n = 0;
-            
+      
+      //mandelbrot
       n = myMandelbrot(a, b, n);
            
       //pixel location within a 1d array
       int location = (x + y*width);
       addColor(n, location);
-
       }  
     }
     updatePixels();
 }
 
 int myMandelbrot (float a, float b, int n){
-  /*Mandelbrot Fractal function
-  Takes in complex number a+bi, max number of iterations, n
+  /*
+  Mandelbrot Fractal function
+  Takes in complex number a+bi and max number of iterations n
   Returns how many iterations were completed, n
   */
   

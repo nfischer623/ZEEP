@@ -11,7 +11,7 @@ int maxiter = 100;
 //Ellie's palette: #006699, #ae82fa, #f261b1, #ffb433
 color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 //varieties: "mandelbrot", "julia", "newton"
-String variety = "julia";
+String variety = "mandelbrot";
 
 color myColor = 0;
 

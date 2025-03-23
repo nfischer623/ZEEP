@@ -9,7 +9,7 @@ int maxiter = 20;
 
 //user input:
 //Ellie's palette: #006699, #ae82fa, #f261b1, #ffb433
-color[] colorPicks = {};
+color[] colorPicks = {#006699, #ae82fa, #f261b1, #ffb433};
 String variety = "newton";
 
 color myColor = 0;
@@ -30,7 +30,9 @@ float root3_real = -.5;
 float root3_i = -(sqrt(3)/2);
 
 void setup(){
+  //4:3 ratio
   size(1400, 1050);
+  //hue saturation brightness
   colorMode(HSB);
 }
 
@@ -62,8 +64,7 @@ void draw(){
         if (filterOn){
           nsmooth = n + 1 - log(log(abs(a)))/log(2);
   }
-      }
-           
+      }         
       //pixel location within a 1d array
       int location = (x + y*width);
       addColor(n, location);
@@ -74,11 +75,15 @@ void draw(){
 }
 
 float [] NewtonsMethod(float a, float b){
-    //applies Newton's Method to a complex number a + bi
-    //Newton's Method: x(n+1) = xn - f(xn)/f'(xn)
-    //But broken down into real and imaginary parts
+    /*
+    Applies Newton's Method to a complex number a + bi
+    Newton's Method: x(n+1) = xn - f(xn)/f'(xn)
+    But broken down into real and imaginary parts
+    */
     float denominator = 3*(a*a*a*a + 2*a*a*b*b + b*b*b*b);
+    //real part
     a = a - ((a*a*a*a*a + 2*a*a*a*b*b - a*a + a*b*b*b*b +b*b)/denominator);
+    //imaginary part
     b = b - ((a*a*a*a*b+ 2*a*a*b*b*b + 2*a*b + b*b*b*b*b)/denominator);
     float [] new_num = {a, b};
     return new_num;

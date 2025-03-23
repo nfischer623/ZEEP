@@ -7,7 +7,11 @@ void keyPressed(){
   //zoom factor
   float zoomIn = .3 * rangex;
   float zoomOut = .9 * rangex;
-  
+
+  //reset window view
+  if (key == 'h' || key == 'H'){
+    resetView();
+  }        
   //zoom in
   if (key == '+' || key == '=') {
     minX = xCenter - zoomIn;
@@ -61,4 +65,12 @@ void mouseDragged(){
     minY = minY + delta;
     maxY = maxY + delta;
   } 
+}
+
+void resetView(){
+  //reset window view
+  minX = -2;
+  maxX = 2;
+  minY = -1.5;
+  maxY = 1.5;
 }

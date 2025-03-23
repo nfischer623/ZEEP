@@ -19,7 +19,9 @@ boolean filterOn = false;
 float nsmooth;
 
 void setup(){
+  //4:3 ratio
   size(1400, 1050);
+  //hue saturation brightness
   colorMode(HSB);
 }
 
@@ -37,13 +39,13 @@ void draw(){
       
      //number of iterations
       int n = 0;
-            
+        
+      //Julia set
       n = myJulia(a, b, n);
            
       //pixel location within a 1d array
       int location = (x + y*width);
       addColor(n, location);
-
       }  
     }
     updatePixels();
@@ -55,8 +57,9 @@ float juliaX;
 float juliaY;
 
 int myJulia(float a, float b, int n){
-  /*Function to render Julia set fractals
-  Takes in complex number a+bi, max number of iterations, n
+  /*
+  Function to render Julia set fractals
+  Takes in complex number a+bi and max number of iterations n
   Returns how many iterations were completed, n
   */
   float realc;
@@ -85,10 +88,7 @@ int myJulia(float a, float b, int n){
     //checks if point is going towards infinity
     if (a*a + b*b > 4) {
       break;
-    }
-    //funky filter component
-    //nsmooth = n + 1 - log(log(abs(a)))/log(2);
-    
+    }   
     //increments iteration counter
     n++;
   }

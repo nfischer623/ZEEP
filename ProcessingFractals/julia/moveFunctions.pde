@@ -5,9 +5,13 @@ void keyPressed(){
   
   float rangex = maxX - minX;
   //zoom factor
-  float zoomIn = .3 * rangex;
-  float zoomOut = .9 * rangex;
+  float zoomIn = .3*rangex;
+  float zoomOut = .9*rangex;
   
+  //reset window view
+  if (key == 'h' || key == 'H'){
+    resetView();
+  }    
   //zoom in
   if (key == '+' || key == '=') {
     minX = xCenter - zoomIn;
@@ -36,7 +40,7 @@ void keyPressed(){
   }
   if (key == 'p' || key == 'P'){
     juliaPaused = !juliaPaused;
-    if (juliaPaused==true){
+    if (juliaPaused == true){
       juliaX = mouseX;
       juliaY = mouseY;
     }
@@ -68,4 +72,11 @@ void mouseDragged(){
     minY = minY + delta;
     maxY = maxY + delta;
   } 
+}
+
+void resetView(){
+  minX = -2;
+  maxX = 2;
+  minY = -1.5;
+  maxY = 1.5;
 }

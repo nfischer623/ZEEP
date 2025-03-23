@@ -34,6 +34,7 @@ void keyPressed(){
   if (key == 'l' || key == 'L'){
     loadZeep();
   }
+  //pause or unpause Julia
   if (key == 'p' || key == 'P'){
     juliaPaused = !juliaPaused;
     if (juliaPaused==true){
@@ -41,9 +42,14 @@ void keyPressed(){
       juliaY = mouseY;
     }
   }
+  //turn on funky filter
   if (key == 'f' || key == 'F'){
     filterOn = !filterOn;
   }  
+  //reset window view
+  if (key == 'h' || key == 'H'){
+    resetView();
+  }
 }
 
 void mouseDragged(){
@@ -69,4 +75,11 @@ void mouseDragged(){
     maxY = maxY + delta;
   }
   
+}
+
+void resetView(){
+  minX = -2;
+  maxX = 2;
+  minY = -1.5;
+  maxY = 1.5;
 }

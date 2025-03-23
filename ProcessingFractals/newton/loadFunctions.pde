@@ -1,4 +1,4 @@
-//Julia constant not needed for mandelbrot, but needed to save .zeep
+//Julia constant not needed for newton, but needed to save .zeep
 float juliaReal = 0;
 float juliaImag = 0;
 
