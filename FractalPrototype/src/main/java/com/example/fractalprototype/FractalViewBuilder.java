@@ -13,19 +13,28 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Builder;
 import processing.core.PApplet;
 
+import java.io.File;
 import java.util.Locale;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
     private final FractalSketch sketch;
+    private final FileChooser fileChooser;
+    private final Stage stage;
 
 
-    public FractalViewBuilder(FractalModel model) {
+    public FractalViewBuilder(FractalModel model, Stage stage) {
         this.model = model;
         this.sketch = new FractalSketch(model, 875, 700);
+        this.fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        this.stage = stage;
     }
 
 
@@ -34,7 +43,8 @@ public class FractalViewBuilder implements Builder<Region> {
         BorderPane results = new BorderPane();
         results.setTop(new Label("Hello ITS Capstone!"));
         results.setCenter(createCenter());
-        results.setBottom(createExitButton());
+//        results.setBottom(createExitButton());
+        results.setBottom(createBottom());
         MakeProcessingWindow();
         return results;
     }
@@ -42,7 +52,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createCenter() {
         HBox results = new HBox(6, createSettingsBar());
-        results.setPadding(new Insets(50));
+        results.setPadding(new Insets(25));
         return results;
     }
 
@@ -53,9 +63,22 @@ public class FractalViewBuilder implements Builder<Region> {
                 createColorPicker(model.colorBProperty()),
                 createColorPicker(model.colorCProperty()),
                 createColorPicker(model.colorDProperty()),
-                createFractalDropdown());
+                createFractalDropdown(),
+                createSaveImageButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
+    }
+
+
+    private Node createBottom() {
+        Label controls = new Label(
+                "Click + drag to move fractal\n" +
+                "+/- key to zoom in/out\n" +
+                "'F' to enable Funky Mode\n" +
+                        "Right-click to pause (Julia only)");
+        HBox results = new HBox(6, controls, createExitButton());
+        results.setPadding(new Insets(50));
+        return results;
     }
 
 
@@ -87,6 +110,21 @@ public class FractalViewBuilder implements Builder<Region> {
             sketch.redraw();
         });
         return dropdown;
+    }
+
+
+    private Node createSaveImageButton() {
+        Button saveButton = new Button("Save as PNG");
+        saveButton.setOnAction(e -> {
+            fileChooser.setInitialFileName("myFractal");
+            fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+            File file = fileChooser.showSaveDialog(stage);
+            if (file != null) {
+                String fileName = file.getAbsolutePath();
+                sketch.saveImage(fileName);
+            }
+        });
+        return saveButton;
     }
 
 

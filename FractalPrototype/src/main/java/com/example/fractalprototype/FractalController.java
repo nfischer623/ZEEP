@@ -10,8 +10,8 @@ public class FractalController {
     private final FractalViewBuilder fractalView;
     private final FractalModel model = new FractalModel();
 
-    public FractalController() {
-        fractalView = new FractalViewBuilder(model);
+    public FractalController(Stage stage) {
+        fractalView = new FractalViewBuilder(model, stage);
 //        model.fractalTypeProperty().addListener(new ChangeListener<String>() {
 //            @Override
 //            public void changed(ObservableValue<? extends String> observableValue,
