@@ -292,6 +292,14 @@ public class FractalSketch extends PApplet {
     }
 
 
+    public void resetView() {
+        minX = -2;
+        maxX = 2;
+        minY = -1.5f;
+        maxY = 1.5f;
+    }
+
+
     public void setFractalType(String type) { fractalType = type; }
 
 

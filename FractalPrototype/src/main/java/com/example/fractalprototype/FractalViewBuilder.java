@@ -64,7 +64,8 @@ public class FractalViewBuilder implements Builder<Region> {
                 createColorPicker(model.colorCProperty()),
                 createColorPicker(model.colorDProperty()),
                 createFractalDropdown(),
-                createSaveImageButton());
+                createSaveImageButton(),
+                createRecenterButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
     }
@@ -128,6 +129,15 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
+    private Node createRecenterButton() {
+        Button recenterButton = new Button("Re-center");
+        recenterButton.setOnAction(e -> {
+            sketch.resetView();
+        });
+        return recenterButton;
+    }
+
+
     private void MakeProcessingWindow() {
         String[] processingArgs = {"processing_window"};
         PApplet.runSketch(processingArgs, this.sketch);
@@ -138,59 +148,4 @@ public class FractalViewBuilder implements Builder<Region> {
         sketch.exit();
         Platform.exit();
     }
-
-
-    // no longer used
-//    private Node createDrawButton() {
-//        Button drawButton = new Button("Draw!");
-//        drawButton.setOnAction(e -> {
-//            sketch.updateColors(true);
-//        });
-//        HBox results = new HBox(10, drawButton);
-//        results.setAlignment(Pos.CENTER_RIGHT);
-//        return results;
-//    }
-
-
-//    // no longer used
-//    private Node createBrushSizeBox() {
-//        HBox hbox = new HBox(6, new Label("Brush size:"), boundTextField(model.brushSizeProperty()));
-//        hbox.setAlignment(Pos.CENTER_LEFT);
-//        return hbox;
-//    }
-
-
-//    // no longer used
-//    private Canvas createCanvas(Color color) {
-//        Canvas canvas = new Canvas(600, 500);
-//        GraphicsContext gc = canvas.getGraphicsContext2D();
-//        canvas.setOnMouseDragged(paintHandler(gc));
-//        gc.setFill(color);
-//        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-//        return canvas;
-//    }
-
-
-    // no longer used
-//    private Node boundTextField(StringProperty boundProperty) {
-//        TextField textField = new TextField();
-//        textField.textProperty().bindBidirectional(boundProperty);
-//        textField.setText("20");
-//        return textField;
-//    }
-
-
-//    // no longer used
-//    private EventHandler<MouseEvent> paintHandler(GraphicsContext gc) {
-//        return new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent e) {
-//                double size = Double.parseDouble(model.getBrushSize());
-//                double x = e.getX() - size / 2;
-//                double y = e.getY() - size / 2;
-//                gc.setFill(model.getColorA());
-//                gc.fillOval(x, y, size, size);
-//            }
-//        };
-//    }
 }
