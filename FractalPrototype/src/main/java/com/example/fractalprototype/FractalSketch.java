@@ -24,12 +24,24 @@ public class FractalSketch extends PApplet {
 
 
     public void saveImage(String fileName){
-        //creates "unique" file name based on date and time
-//        String fileName = "myFractal" + String.valueOf(month()) + "_" + String.valueOf(day()) + "_"
-//                + String.valueOf(hour()) + String.valueOf(minute()) + String.valueOf(second())+ ".png";
-        //saves to sketch folder
         save(fileName);
-        println("Image saved as " + fileName);
+    }
+
+
+    public void saveZeep(String fileName) {
+        String [] fractalData = {
+                fractalType,
+                Float.toString(minX),
+                Float.toString(maxX),
+                Double.toString(minY),
+                Double.toString(maxY),
+                Float.toString(juliaX),
+                Float.toString(juliaY)
+        };
+        for (int color : colorPicks) {
+            fractalData = append(fractalData, Integer.toString(color));
+        }
+        saveStrings(fileName, fractalData);
     }
 
 

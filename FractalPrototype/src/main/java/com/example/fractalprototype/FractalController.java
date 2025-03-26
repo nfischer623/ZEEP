@@ -12,13 +12,6 @@ public class FractalController {
 
     public FractalController(Stage stage) {
         fractalView = new FractalViewBuilder(model, stage);
-//        model.fractalTypeProperty().addListener(new ChangeListener<String>() {
-//            @Override
-//            public void changed(ObservableValue<? extends String> observableValue,
-//                                String oldValue, String newValue) {
-//                getView();
-//            }
-//        });
     }
 
     public Region getView() {
