@@ -66,6 +66,10 @@ public class FractalSketch extends PApplet {
         model.colorDProperty().set(model.getColorFromString(fractalData[10]));
         updateColors(false);
 
+        if (Objects.equals(fractalType, "julia")) {
+            juliaPaused = true;
+        }
+
         redraw();
     }
 

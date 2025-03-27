@@ -98,8 +98,8 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createColorPicker(ObjectProperty<Color> colorProperty) {
         ColorPicker colorPicker = new ColorPicker(colorProperty.get());
+        colorPicker.valueProperty().bindBidirectional(colorProperty);
         colorPicker.setOnAction(e -> {
-            colorProperty.set(colorPicker.getValue());
             sketch.updateColors(true);
         });
         return colorPicker;
