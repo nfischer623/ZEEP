@@ -34,6 +34,11 @@ public class FractalModel {
     }
 
 
+    public Color getColorFromString(String color) {
+        return Color.valueOf(color);
+    }
+
+
     public ObjectProperty<Color> colorAProperty() {
         return colorA;
     }

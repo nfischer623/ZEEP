@@ -68,6 +68,7 @@ public class FractalViewBuilder implements Builder<Region> {
                 createFractalDropdown(),
                 createSaveImageButton(),
                 createSaveZeepButton(),
+                createLoadZeepButton(),
                 createRecenterButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
@@ -144,6 +145,20 @@ public class FractalViewBuilder implements Builder<Region> {
             }
         });
         return saveButton;
+    }
+
+
+    private Node createLoadZeepButton() {
+        Button loadButton = new Button("Load existing ZEEP project");
+        loadButton.setOnAction(e -> {
+            fileChooser.setSelectedExtensionFilter(zeepExtFilter);
+            File file = fileChooser.showOpenDialog(stage);
+            if (file != null) {
+                String fileName = file.getAbsolutePath();
+                sketch.loadZeep(fileName);
+            }
+        });
+        return loadButton;
     }
 
 

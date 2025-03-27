@@ -1,5 +1,6 @@
 package com.example.fractalprototype;
 
+import javafx.scene.paint.Color;
 import processing.core.*;
 
 import java.util.Objects;
@@ -33,8 +34,8 @@ public class FractalSketch extends PApplet {
                 fractalType,
                 Float.toString(minX),
                 Float.toString(maxX),
-                Double.toString(minY),
-                Double.toString(maxY),
+                Float.toString(minY),
+                Float.toString(maxY),
                 Float.toString(juliaX),
                 Float.toString(juliaY)
         };
@@ -42,6 +43,30 @@ public class FractalSketch extends PApplet {
             fractalData = append(fractalData, Integer.toString(color));
         }
         saveStrings(fileName, fractalData);
+    }
+
+
+    public void loadZeep(String fileName) {
+        // good lord this function is ugly
+
+        String [] fractalData = loadStrings(fileName);
+
+        // type, position
+        fractalType = fractalData[0];
+        minX = parseFloat(fractalData[1]);
+        maxX = parseFloat(fractalData[2]);
+        minY = parseFloat(fractalData[3]);
+        maxY = parseFloat(fractalData[4]);
+        juliaX = parseFloat(fractalData[5]);
+        juliaY = parseFloat(fractalData[6]);
+        // colors
+        model.colorAProperty().set(model.getColorFromString(fractalData[7]));
+        model.colorBProperty().set(model.getColorFromString(fractalData[8]));
+        model.colorCProperty().set(model.getColorFromString(fractalData[9]));
+        model.colorDProperty().set(model.getColorFromString(fractalData[10]));
+        updateColors(false);
+
+        redraw();
     }
 
 
