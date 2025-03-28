@@ -25,8 +25,9 @@ public class FractalApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(new FractalController(primaryStage).getView());
+        scene.getStylesheets().add("zeep-style.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("ZEEP v0.2");
+        primaryStage.setTitle("ZEEP v0.4");
         primaryStage.show();
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
