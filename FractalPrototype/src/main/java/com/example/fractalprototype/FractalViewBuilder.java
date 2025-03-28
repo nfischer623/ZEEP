@@ -2,7 +2,6 @@ package com.example.fractalprototype;
 
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +18,6 @@ import javafx.util.Builder;
 import processing.core.PApplet;
 
 import java.io.File;
-import java.util.Locale;
 
 public class FractalViewBuilder implements Builder<Region> {
     private final FractalModel model;
@@ -43,7 +41,7 @@ public class FractalViewBuilder implements Builder<Region> {
     @Override
     public Region build() {
         BorderPane results = new BorderPane();
-        results.setTop(new Label("Hello ITS Capstone!"));
+        results.setTop(createMenuBar());
         results.setCenter(createCenter());
 //        results.setBottom(createExitButton());
         results.setBottom(createBottom());
@@ -52,23 +50,41 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
+    private MenuBar createMenuBar() {
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(createFileMenu());
+
+        return menuBar;
+    }
+
+
+    private Menu createFileMenu() {
+        Menu fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(
+                createSaveImageMenuItem(),
+                createSaveZeepMenuItem(),
+                createLoadZeepMenuItem());
+        return fileMenu;
+    }
+
+
     private Node createCenter() {
-        HBox results = new HBox(6, createSettingsBar());
+        HBox results = new HBox(6, createInteractables());
         results.setPadding(new Insets(25));
         return results;
     }
 
 
-    private Node createSettingsBar() {
+    private Node createInteractables() {
         VBox vbox = new VBox(6,
                 createColorPicker(model.colorAProperty()),
                 createColorPicker(model.colorBProperty()),
                 createColorPicker(model.colorCProperty()),
                 createColorPicker(model.colorDProperty()),
                 createFractalDropdown(),
-                createSaveImageButton(),
-                createSaveZeepButton(),
-                createLoadZeepButton(),
+//                createSaveImageMenuItem(),
+//                createSaveZeepMenuItem(),
+//                createLoadZeepMenuItem(),
                 createRecenterButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
@@ -118,8 +134,8 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
-    private Node createSaveImageButton() {
-        Button saveButton = new Button("Save as PNG");
+    private MenuItem createSaveImageMenuItem() {
+        MenuItem saveButton = new MenuItem("Export as PNG");
         saveButton.setOnAction(e -> {
             fileChooser.setInitialFileName("myFractal");
             fileChooser.setSelectedExtensionFilter(imageExtFilter);
@@ -133,8 +149,8 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
-    private Node createSaveZeepButton() {
-        Button saveButton = new Button("Save as ZEEP project");
+    private MenuItem createSaveZeepMenuItem() {
+        MenuItem saveButton = new MenuItem("Export as ZEEP project");
         saveButton.setOnAction(e -> {
             fileChooser.setInitialFileName("myFractal");
             fileChooser.setSelectedExtensionFilter(zeepExtFilter);
@@ -148,8 +164,8 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
-    private Node createLoadZeepButton() {
-        Button loadButton = new Button("Load existing ZEEP project");
+    private MenuItem createLoadZeepMenuItem() {
+        MenuItem loadButton = new MenuItem("Load from existing ZEEP project");
         loadButton.setOnAction(e -> {
             fileChooser.setSelectedExtensionFilter(zeepExtFilter);
             File file = fileChooser.showOpenDialog(stage);
