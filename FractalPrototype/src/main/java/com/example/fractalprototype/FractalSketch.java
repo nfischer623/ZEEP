@@ -1,5 +1,6 @@
 package com.example.fractalprototype;
 
+import javafx.scene.paint.Color;
 import processing.core.*;
 
 import java.util.Objects;
@@ -24,12 +25,52 @@ public class FractalSketch extends PApplet {
 
 
     public void saveImage(String fileName){
-        //creates "unique" file name based on date and time
-//        String fileName = "myFractal" + String.valueOf(month()) + "_" + String.valueOf(day()) + "_"
-//                + String.valueOf(hour()) + String.valueOf(minute()) + String.valueOf(second())+ ".png";
-        //saves to sketch folder
         save(fileName);
-        println("Image saved as " + fileName);
+    }
+
+
+    public void saveZeep(String fileName) {
+        String [] fractalData = {
+                fractalType,
+                Float.toString(minX),
+                Float.toString(maxX),
+                Float.toString(minY),
+                Float.toString(maxY),
+                Float.toString(juliaX),
+                Float.toString(juliaY)
+        };
+        for (int color : colorPicks) {
+            fractalData = append(fractalData, Integer.toString(color));
+        }
+        saveStrings(fileName, fractalData);
+    }
+
+
+    public void loadZeep(String fileName) {
+        // good lord this function is ugly
+
+        String [] fractalData = loadStrings(fileName);
+
+        // type, position
+        fractalType = fractalData[0];
+        minX = parseFloat(fractalData[1]);
+        maxX = parseFloat(fractalData[2]);
+        minY = parseFloat(fractalData[3]);
+        maxY = parseFloat(fractalData[4]);
+        juliaX = parseFloat(fractalData[5]);
+        juliaY = parseFloat(fractalData[6]);
+        // colors
+        model.colorAProperty().set(model.getColorFromString(fractalData[7]));
+        model.colorBProperty().set(model.getColorFromString(fractalData[8]));
+        model.colorCProperty().set(model.getColorFromString(fractalData[9]));
+        model.colorDProperty().set(model.getColorFromString(fractalData[10]));
+        updateColors(false);
+
+        if (Objects.equals(fractalType, "julia")) {
+            juliaPaused = true;
+        }
+
+        redraw();
     }
 
 

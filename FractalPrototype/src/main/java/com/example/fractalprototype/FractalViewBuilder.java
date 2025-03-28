@@ -27,13 +27,15 @@ public class FractalViewBuilder implements Builder<Region> {
     private final FileChooser fileChooser;
     private final Stage stage;
 
+    private final FileChooser.ExtensionFilter imageExtFilter = new FileChooser.ExtensionFilter("Image Files", "*.png");
+    private final FileChooser.ExtensionFilter zeepExtFilter = new FileChooser.ExtensionFilter("ZEEP Project Files", "*.zeep");
+
 
     public FractalViewBuilder(FractalModel model, Stage stage) {
         this.model = model;
         this.sketch = new FractalSketch(model, 875, 700);
         this.fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png"));
+        fileChooser.getExtensionFilters().addAll(imageExtFilter, zeepExtFilter);
         this.stage = stage;
     }
 
@@ -65,6 +67,8 @@ public class FractalViewBuilder implements Builder<Region> {
                 createColorPicker(model.colorDProperty()),
                 createFractalDropdown(),
                 createSaveImageButton(),
+                createSaveZeepButton(),
+                createLoadZeepButton(),
                 createRecenterButton());
         vbox.setAlignment(Pos.CENTER_LEFT);
         return vbox;
@@ -76,7 +80,7 @@ public class FractalViewBuilder implements Builder<Region> {
                 "Click + drag to move fractal\n" +
                 "+/- key to zoom in/out\n" +
                 "'F' to enable Funky Mode\n" +
-                        "Right-click to pause (Julia only)");
+                "Right-click to pause (Julia only)");
         HBox results = new HBox(6, controls, createExitButton());
         results.setPadding(new Insets(50));
         return results;
@@ -94,8 +98,8 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createColorPicker(ObjectProperty<Color> colorProperty) {
         ColorPicker colorPicker = new ColorPicker(colorProperty.get());
+        colorPicker.valueProperty().bindBidirectional(colorProperty);
         colorPicker.setOnAction(e -> {
-            colorProperty.set(colorPicker.getValue());
             sketch.updateColors(true);
         });
         return colorPicker;
@@ -118,7 +122,7 @@ public class FractalViewBuilder implements Builder<Region> {
         Button saveButton = new Button("Save as PNG");
         saveButton.setOnAction(e -> {
             fileChooser.setInitialFileName("myFractal");
-            fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Image Files", "*.png"));
+            fileChooser.setSelectedExtensionFilter(imageExtFilter);
             File file = fileChooser.showSaveDialog(stage);
             if (file != null) {
                 String fileName = file.getAbsolutePath();
@@ -126,6 +130,35 @@ public class FractalViewBuilder implements Builder<Region> {
             }
         });
         return saveButton;
+    }
+
+
+    private Node createSaveZeepButton() {
+        Button saveButton = new Button("Save as ZEEP project");
+        saveButton.setOnAction(e -> {
+            fileChooser.setInitialFileName("myFractal");
+            fileChooser.setSelectedExtensionFilter(zeepExtFilter);
+            File file = fileChooser.showSaveDialog(stage);
+            if (file != null) {
+                String fileName = file.getAbsolutePath();
+                sketch.saveZeep(fileName);
+            }
+        });
+        return saveButton;
+    }
+
+
+    private Node createLoadZeepButton() {
+        Button loadButton = new Button("Load existing ZEEP project");
+        loadButton.setOnAction(e -> {
+            fileChooser.setSelectedExtensionFilter(zeepExtFilter);
+            File file = fileChooser.showOpenDialog(stage);
+            if (file != null) {
+                String fileName = file.getAbsolutePath();
+                sketch.loadZeep(fileName);
+            }
+        });
+        return loadButton;
     }
 
 

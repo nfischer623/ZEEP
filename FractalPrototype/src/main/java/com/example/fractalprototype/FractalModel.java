@@ -34,6 +34,13 @@ public class FractalModel {
     }
 
 
+    public Color getColorFromString(String color) {
+        int colorInt = Integer.parseInt(color);
+        System.out.println(colorInt);
+        return Color.web(String.format("#%06X", (0xFFFFFF & colorInt)));
+    }
+
+
     public ObjectProperty<Color> colorAProperty() {
         return colorA;
     }
