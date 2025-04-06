@@ -79,6 +79,12 @@ public class FractalSketch extends PApplet {
         surface.setLocation(displayWidth / 3, (displayHeight - sketchHeight) / 2);
         // NOTE: this will implicitly truncate any non-int results
         // may want to make explicit in the future
+
+        surface.setTitle("Fractal Viewer");
+
+        PImage icon = loadImage("ZEEP_icon.png");
+        surface.setIcon(icon);
+
         colorMode(HSB);
     }
 
@@ -344,5 +350,7 @@ public class FractalSketch extends PApplet {
     public void setFractalType(String type) { fractalType = type; }
 
 
-    public void settings() { size(1400, 1050); }
+    public void settings() {
+        size(1400, 1050);
+    }
 }

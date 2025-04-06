@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -28,6 +29,7 @@ public class FractalApplication extends Application {
         scene.getStylesheets().add("zeep-style.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("ZEEP v0.4");
+        primaryStage.getIcons().add(new Image(App.class.getResourceAsStream("/ZEEP_icon.png")));
         primaryStage.show();
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
