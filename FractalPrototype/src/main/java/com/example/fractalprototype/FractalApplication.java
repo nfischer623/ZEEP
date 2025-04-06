@@ -28,7 +28,7 @@ public class FractalApplication extends Application {
         Scene scene = new Scene(new FractalController(primaryStage).getView());
         scene.getStylesheets().add("zeep-style.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("ZEEP v0.4");
+        primaryStage.setTitle("ZEEP v1.0");
         primaryStage.getIcons().add(new Image(App.class.getResourceAsStream("/ZEEP_icon.png")));
         primaryStage.show();
 
