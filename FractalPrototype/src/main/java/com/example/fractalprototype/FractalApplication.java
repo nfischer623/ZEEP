@@ -20,9 +20,6 @@ public class FractalApplication extends Application {
     }
 
 
-//    private Region juliaSceneRoot;
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scene scene = new Scene(new FractalController(primaryStage).getView());
@@ -33,9 +30,10 @@ public class FractalApplication extends Application {
         primaryStage.show();
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-        double x = bounds.getMinX() + (bounds.getWidth() - scene.getWidth()) * 0.1;
-        double y = bounds.getMinY() + (bounds.getHeight() - scene.getHeight()) * 0.4;
+        double x = bounds.getMinX() + (bounds.getWidth() - scene.getWidth()) * 0.15;
+        double y = bounds.getMinY() + (bounds.getHeight() - scene.getHeight()) * 0.5;
         primaryStage.setX(x);
         primaryStage.setY(y);
+        primaryStage.setWidth(350);
     }
 }

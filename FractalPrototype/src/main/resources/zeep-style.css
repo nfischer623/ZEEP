@@ -2,3 +2,19 @@
     -fx-background: rgb(232, 224, 255);
     -fx-base: rgb(194,180,241);
 }
+
+.zeep-color-picker {
+    -fx-min-width: 50px;
+    -fx-min-height: 55px;
+    -fx-color-rect-width: 40px;
+    -fx-color-rect-height: 40px;
+    -fx-color-label-visible: false;
+}
+
+.combo-box {
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font-weight: bold;
+}

@@ -43,7 +43,6 @@ public class FractalViewBuilder implements Builder<Region> {
         BorderPane results = new BorderPane();
         results.setTop(createMenuBar());
         results.setCenter(createCenter());
-//        results.setBottom(createExitButton());
         results.setBottom(createBottom());
         MakeProcessingWindow();
         return results;
@@ -69,42 +68,54 @@ public class FractalViewBuilder implements Builder<Region> {
 
 
     private Node createCenter() {
-        HBox results = new HBox(6, createInteractables());
+        HBox interactables = new HBox(6, createInteractables());
+//        interactables.setPadding(new Insets(25));
+        interactables.setAlignment(Pos.CENTER);
+
+        Label controls = new Label(
+                    "Click & drag to move fractal\n" +
+                    "+/- key to zoom in/out\n" +
+                    "'F' to enable Funky Mode\n" +
+                    "Right-click to pause (Julia only)");
+
+        VBox results = new VBox(35, interactables, controls);
+        results.setPadding(new Insets(25));
+        return results;
+    }
+
+    private Node createColorMenu() {
+        Label label = new Label("Colors");
+        HBox colors = new HBox(6,
+                createColorPicker(model.colorAProperty()),
+                createColorPicker(model.colorBProperty()),
+                createColorPicker(model.colorCProperty()),
+                createColorPicker(model.colorDProperty())
+        );
+        VBox results = new VBox(6, label, colors);
+        results.setAlignment(Pos.CENTER);
+        return results;
+    }
+
+    private Node createInteractables() {
+        VBox results = new VBox(35,
+                createColorMenu(),
+                createFractalDropdown(),
+                createRecenterButton()
+        );
+        results.setAlignment(Pos.CENTER_LEFT);
+        return results;
+    }
+
+
+    private Node createBottom() {
+        VBox results = new VBox(6, createExitButton());
         results.setPadding(new Insets(25));
         return results;
     }
 
 
-    private Node createInteractables() {
-        VBox vbox = new VBox(6,
-                createColorPicker(model.colorAProperty()),
-                createColorPicker(model.colorBProperty()),
-                createColorPicker(model.colorCProperty()),
-                createColorPicker(model.colorDProperty()),
-                createFractalDropdown(),
-//                createSaveImageMenuItem(),
-//                createSaveZeepMenuItem(),
-//                createLoadZeepMenuItem(),
-                createRecenterButton());
-        vbox.setAlignment(Pos.CENTER_LEFT);
-        return vbox;
-    }
-
-
-    private Node createBottom() {
-        Label controls = new Label(
-                "Click + drag to move fractal\n" +
-                "+/- key to zoom in/out\n" +
-                "'F' to enable Funky Mode\n" +
-                "Right-click to pause (Julia only)");
-        HBox results = new HBox(6, controls, createExitButton());
-        results.setPadding(new Insets(50));
-        return results;
-    }
-
-
     private Node createExitButton() {
-        Button exitButton = new Button("Exit");
+        Button exitButton = new Button("Quit");
         exitButton.setOnAction(e -> exitApplication());
         HBox results = new HBox(10, exitButton);
         results.setAlignment(Pos.CENTER_RIGHT);
@@ -114,6 +125,7 @@ public class FractalViewBuilder implements Builder<Region> {
 
     private Node createColorPicker(ObjectProperty<Color> colorProperty) {
         ColorPicker colorPicker = new ColorPicker(colorProperty.get());
+        colorPicker.getStyleClass().addAll("zeep-color-picker", "button");
         colorPicker.valueProperty().bindBidirectional(colorProperty);
         colorPicker.setOnAction(e -> {
             sketch.updateColors(true);
@@ -130,7 +142,10 @@ public class FractalViewBuilder implements Builder<Region> {
             sketch.setFractalType(dropdown.getValue().toLowerCase());
             sketch.redraw();
         });
-        return dropdown;
+        VBox vbox = new VBox(6, new Label("Fractal type:"), dropdown);
+        HBox results = new HBox(6, vbox);
+        results.setAlignment(Pos.CENTER_LEFT);
+        return results;
     }
 
 
@@ -182,6 +197,7 @@ public class FractalViewBuilder implements Builder<Region> {
         Button recenterButton = new Button("Re-center");
         recenterButton.setOnAction(e -> {
             sketch.resetView();
+            System.out.println(stage.getX() + " " + stage.getY());
         });
         return recenterButton;
     }
