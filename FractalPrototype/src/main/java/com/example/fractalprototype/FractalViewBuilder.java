@@ -49,6 +49,8 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
+    // Creates the menu bar at the top of the application.
+    // Currently, the only menu it contains is "File" (save/export/load).
     private MenuBar createMenuBar() {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(createFileMenu());
@@ -57,6 +59,7 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
+    // Creates the file menu to add to the menu bar.
     private Menu createFileMenu() {
         Menu fileMenu = new Menu("File");
         fileMenu.getItems().addAll(
@@ -67,21 +70,24 @@ public class FractalViewBuilder implements Builder<Region> {
     }
 
 
+    // the next several functions are to create UI elements
     private Node createCenter() {
         HBox interactables = new HBox(6, createInteractables());
-//        interactables.setPadding(new Insets(25));
         interactables.setAlignment(Pos.CENTER);
 
         Label controls = new Label(
+                    "CONTROLS:\n" +
                     "Click & drag to move fractal\n" +
                     "+/- key to zoom in/out\n" +
                     "'F' to enable Funky Mode\n" +
                     "Right-click to pause (Julia only)");
+        controls.getStyleClass().add("controls-label");
 
         VBox results = new VBox(35, interactables, controls);
         results.setPadding(new Insets(25));
         return results;
     }
+
 
     private Node createColorMenu() {
         Label label = new Label("Colors");
@@ -95,6 +101,7 @@ public class FractalViewBuilder implements Builder<Region> {
         results.setAlignment(Pos.CENTER);
         return results;
     }
+
 
     private Node createInteractables() {
         VBox results = new VBox(35,
@@ -127,6 +134,7 @@ public class FractalViewBuilder implements Builder<Region> {
         ColorPicker colorPicker = new ColorPicker(colorProperty.get());
         colorPicker.getStyleClass().addAll("zeep-color-picker", "button");
         colorPicker.valueProperty().bindBidirectional(colorProperty);
+        // update the Processing sketch when user interacts with the color picker
         colorPicker.setOnAction(e -> {
             sketch.updateColors(true);
         });
@@ -138,6 +146,7 @@ public class FractalViewBuilder implements Builder<Region> {
         ComboBox<String> dropdown = new ComboBox(
                 FXCollections.observableArrayList("Mandelbrot", "Julia"));
         dropdown.valueProperty().bindBidirectional(model.fractalTypeProperty());
+        // update the sketch when user changes the fractal type
         dropdown.setOnAction(e -> {
             sketch.setFractalType(dropdown.getValue().toLowerCase());
             sketch.redraw();
@@ -197,18 +206,19 @@ public class FractalViewBuilder implements Builder<Region> {
         Button recenterButton = new Button("Re-center");
         recenterButton.setOnAction(e -> {
             sketch.resetView();
-            System.out.println(stage.getX() + " " + stage.getY());
         });
         return recenterButton;
     }
 
 
+    // Opens the Processing sketch window.
     private void MakeProcessingWindow() {
         String[] processingArgs = {"processing_window"};
         PApplet.runSketch(processingArgs, this.sketch);
     }
 
 
+    // Exits the application. (set on action for exit button)
     private void exitApplication() {
         sketch.exit();
         Platform.exit();

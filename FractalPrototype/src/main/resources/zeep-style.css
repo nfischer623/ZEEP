@@ -11,6 +11,14 @@
     -fx-color-label-visible: false;
 }
 
+.controls-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-color: rgb(196, 187, 222);
+    -fx-padding: 15px;
+    -fx-background-radius: 5px;
+}
+
 .combo-box {
     -fx-font-weight: bold;
 }

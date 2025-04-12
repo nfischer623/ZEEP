@@ -25,15 +25,17 @@ public class FractalApplication extends Application {
         Scene scene = new Scene(new FractalController(primaryStage).getView());
         scene.getStylesheets().add("zeep-style.css");
         primaryStage.setScene(scene);
-        primaryStage.setTitle("ZEEP v1.0");
+        primaryStage.setTitle("ZEEP v1.2");
         primaryStage.getIcons().add(new Image(App.class.getResourceAsStream("/ZEEP_icon.png")));
         primaryStage.show();
 
+        // align the window with the user's screen
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         double x = bounds.getMinX() + (bounds.getWidth() - scene.getWidth()) * 0.15;
         double y = bounds.getMinY() + (bounds.getHeight() - scene.getHeight()) * 0.5;
         primaryStage.setX(x);
         primaryStage.setY(y);
+
         primaryStage.setWidth(350);
     }
 }

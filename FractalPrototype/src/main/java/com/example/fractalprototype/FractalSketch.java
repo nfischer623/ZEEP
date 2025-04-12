@@ -24,11 +24,14 @@ public class FractalSketch extends PApplet {
     }
 
 
+    // Exports the current sketch as a PNG image.
+    // Uses Processing's built-in save() function.
     public void saveImage(String fileName){
         save(fileName);
     }
 
 
+    // Saves the current sketch data to a .zeep file.
     public void saveZeep(String fileName) {
         String [] fractalData = {
                 fractalType,
@@ -46,6 +49,7 @@ public class FractalSketch extends PApplet {
     }
 
 
+    // Loads sketch data from an existing .zeep file into the current sketch.
     public void loadZeep(String fileName) {
         // good lord this function is ugly
 
@@ -125,6 +129,8 @@ public class FractalSketch extends PApplet {
                 //number of iterations
                 var n = 0;
 
+                // could include more fractal types in the future
+                // just add another switch case and another function
                 switch (fractalType) {
                     case "mandelbrot":
                         n = mandelbrot(a, b, n);
@@ -339,6 +345,7 @@ public class FractalSketch extends PApplet {
     }
 
 
+    // used with the Recenter button in the UI
     public void resetView() {
         minX = -2;
         maxX = 2;
