@@ -23,7 +23,7 @@ Any version of the JDK (e.g. 24, 21, etc.) is fine, as long as it is 17 or highe
 If you try to run the JAR file and nothing happens/a window shows up for a split second but immediately disappears:
 1. [Open a command prompt.](https://www.wikihow.com/Open-Terminal-in-Windows)
 2. Enter the following command:  
-`java --jar <path-to-file>`  
+`java -jar <path-to-file>`  
 Replace `<path-to-file>` with the path to the ZEEP JAR. For example, if the JAR is in your Downloads folder, your path may look like `C:\Users\nicole\Downloads\ZEEPv1.2.jar` or just `Downloads\ZEEPv1.2.jar`.
 
 If ZEEP did not run before, it should now!
